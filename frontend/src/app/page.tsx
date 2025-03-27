@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
 import { Action } from "./types";
+import { Button } from "../components/ui/button";
 
 export default function Home() {
    const [actions, setActions] = useState<Action[]>([]);
@@ -26,7 +27,7 @@ export default function Home() {
 
    type FormValues = Omit<Action, "triggers"> & { triggers: string };
    return (
-      <div className="min-h-screen bg-gray-900 text-white grid grid-cols-2 gap-4 p-8">
+      <div className="min-h-screen bg-contrast-0 text-white grid grid-cols-2 gap-4 p-8">
          {/* Left Section: Form */}
          <div className="flex items-center justify-center">
             <Formik<FormValues>
@@ -46,7 +47,7 @@ export default function Home() {
                }}
             >
                {() => (
-                  <Form className="bg-gray-800 p-6 rounded shadow-md w-full max-w-md">
+                  <Form className="bg-foreground-muted p-6 rounded shadow-md w-full max-w-md">
                      <h2 className="text-xl font-bold mb-4">Add New Action</h2>
                      <div className="mb-4">
                         <label className="block mb-1" htmlFor="title">
@@ -104,12 +105,9 @@ export default function Home() {
                            className="w-full p-2 rounded bg-gray-700 text-white"
                         />
                      </div>
-                     <button
-                        type="submit"
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-                     >
+                     <Button type="submit" className="w-full">
                         Add Action
-                     </button>
+                     </Button>
                   </Form>
                )}
             </Formik>
