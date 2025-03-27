@@ -58,15 +58,15 @@
 
 :root {
    --contrast-0: var(--color-white);
-   --contrast-1: var(--color-gray-100);
-   --contrast-2: var(--color-gray-200);
-   --contrast-3: var(--color-gray-300);
-   --contrast-4: var(--color-gray-400);
-   --contrast-5: var(--color-gray-500);
-   --contrast-6: var(--color-gray-600);
-   --contrast-7: var(--color-gray-700);
-   --contrast-8: var(--color-gray-800);
-   --contrast-9: var(--color-gray-900);
+   --contrast-1: var(--color-neutral-100);
+   --contrast-2: var(--color-neutral-200);
+   --contrast-3: var(--color-neutral-300);
+   --contrast-4: var(--color-neutral-400);
+   --contrast-5: var(--color-neutral-500);
+   --contrast-6: var(--color-neutral-600);
+   --contrast-7: var(--color-neutral-700);
+   --contrast-8: var(--color-neutral-800);
+   --contrast-9: var(--color-neutral-900);
    --contrast-10: var(--color-black);
 
    --radius: 0.625rem;
@@ -106,15 +106,15 @@
 
 .dark {
    --contrast-0: var(--color-black);
-   --contrast-1: var(--color-gray-900);
-   --contrast-2: var(--color-gray-800);
-   --contrast-3: var(--color-gray-700);
-   --contrast-4: var(--color-gray-600);
-   --contrast-5: var(--color-gray-500);
-   --contrast-6: var(--color-gray-400);
-   --contrast-7: var(--color-gray-300);
-   --contrast-8: var(--color-gray-200);
-   --contrast-9: var(--color-gray-100);
+   --contrast-1: var(--color-neutral-900);
+   --contrast-2: var(--color-neutral-800);
+   --contrast-3: var(--color-neutral-700);
+   --contrast-4: var(--color-neutral-600);
+   --contrast-5: var(--color-neutral-500);
+   --contrast-6: var(--color-neutral-400);
+   --contrast-7: var(--color-neutral-300);
+   --contrast-8: var(--color-neutral-200);
+   --contrast-9: var(--color-neutral-100);
    --contrast-10: var(--color-white);
 
    --background: oklch(0.129 0.042 264.695);

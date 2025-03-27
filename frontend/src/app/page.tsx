@@ -27,9 +27,9 @@ export default function Home() {
 
    type FormValues = Omit<Action, "triggers"> & { triggers: string };
    return (
-      <div className="min-h-screen bg-contrast-0 text-white grid grid-cols-2 gap-4 p-8">
+      <div className="min-h-screen bg-contrast-0 text-white flex p-8">
          {/* Left Section: Form */}
-         <div className="flex items-center justify-center">
+         <div className="flex-1 flex items-center bg-contrast-1 justify-center">
             <Formik<FormValues>
                initialValues={{
                   title: "",
@@ -47,7 +47,7 @@ export default function Home() {
                }}
             >
                {() => (
-                  <Form className="bg-foreground-muted p-6 rounded shadow-md w-full max-w-md">
+                  <Form className="bg-contrast-2 p-6 rounded shadow-md w-full max-w-md">
                      <h2 className="text-xl font-bold mb-4">Add New Action</h2>
                      <div className="mb-4">
                         <label className="block mb-1" htmlFor="title">
@@ -57,7 +57,7 @@ export default function Home() {
                            id="title"
                            name="title"
                            placeholder="Action Title"
-                           className="w-full p-2 rounded bg-gray-700 text-white"
+                           className="w-full p-2 rounded bg-contrast-3 text-white"
                         />
                      </div>
                      <div className="mb-4">
@@ -69,7 +69,7 @@ export default function Home() {
                            name="description"
                            as="textarea"
                            placeholder="Action Description"
-                           className="w-full p-2 rounded bg-gray-700 text-white"
+                           className="w-full p-2 rounded bg-contrast-3 text-white"
                         />
                      </div>
                      <div className="mb-4">
@@ -80,7 +80,7 @@ export default function Home() {
                            id="time"
                            name="time"
                            placeholder="e.g., Action, Bonus Action"
-                           className="w-full p-2 rounded bg-gray-700 text-white"
+                           className="w-full p-2 rounded bg-contrast-3 text-white"
                         />
                      </div>
                      <div className="mb-4">
@@ -91,7 +91,7 @@ export default function Home() {
                            id="attack"
                            name="attack"
                            placeholder="e.g., 1d8 slashing"
-                           className="w-full p-2 rounded bg-gray-700 text-white"
+                           className="w-full p-2 rounded bg-contrast-3 text-white"
                         />
                      </div>
                      <div className="mb-4">
@@ -102,7 +102,7 @@ export default function Home() {
                            id="triggers"
                            name="triggers"
                            placeholder="e.g., Enemy casts spell, Bonus Action"
-                           className="w-full p-2 rounded bg-gray-700 text-white"
+                           className="w-full p-2 rounded bg-contrast-3 text-white"
                         />
                      </div>
                      <Button type="submit" className="w-full">
@@ -114,10 +114,10 @@ export default function Home() {
          </div>
 
          {/* Right Section: Actions List */}
-         <div>
+         <div className="flex-2 p-4">
             <h2 className="text-xl font-bold mb-4">Actions by Trigger</h2>
             {Object.keys(groupedActions).length === 0 ? (
-               <p className="text-gray-400">No actions added yet.</p>
+               <p className="text-contrast-5">No actions added yet.</p>
             ) : (
                Object.entries(groupedActions).map(([trigger, actions]) => (
                   <div key={trigger} className="mb-6">
@@ -126,7 +126,7 @@ export default function Home() {
                         {actions.map((action, index) => (
                            <li
                               key={index}
-                              className="bg-gray-800 p-4 rounded shadow"
+                              className="bg-contrast-4 p-4 rounded shadow"
                            >
                               <p>
                                  <strong>{action.title}</strong>
