@@ -29,7 +29,7 @@ export default function Home() {
    return (
       <div className="min-h-screen bg-contrast-0 text-white flex p-8">
          {/* Left Section: Form */}
-         <div className="flex-1 flex items-center bg-contrast-1 justify-center">
+         <div className="flex-1 flex  bg-contrast-1 justify-center items-center">
             <Formik<FormValues>
                initialValues={{
                   title: "",
