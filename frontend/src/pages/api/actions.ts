@@ -8,6 +8,8 @@ export default async function handler(
    req: NextApiRequest,
    res: NextApiResponse
 ) {
+   console.log("Request received:", req.method, req.body); // Debugging log
+
    if (req.method === "POST") {
       const { action } = req.body;
 
@@ -15,11 +17,12 @@ export default async function handler(
          await dynamoDB.send(
             new PutCommand({
                TableName: TABLE_NAME,
-               Item: { id: Date.now().toString(), action },
+               Item: { primaryKey: Date.now().toString(), action },
             })
          );
          res.status(200).json({ message: "Action saved!" });
       } catch (error) {
+         console.error("Error saving action:", error); // Debugging log
          res.status(500).json({ error: "Failed to save action" });
       }
    } else if (req.method === "GET") {
@@ -29,6 +32,7 @@ export default async function handler(
          );
          res.status(200).json(data.Items);
       } catch (error) {
+         console.error("Error fetching actions:", error); // Debugging log
          res.status(500).json({ error: "Failed to fetch actions" });
       }
    } else {

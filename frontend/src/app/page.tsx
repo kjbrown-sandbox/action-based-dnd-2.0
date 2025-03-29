@@ -1,17 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
 import { Action } from "./types";
 import { Button } from "../components/ui/button";
+import {
+   saveActionToIndexedDB,
+   getActionsFromIndexedDB,
+} from "../lib/indexedDB";
 
 export default function Home() {
    const [actions, setActions] = useState<Action[]>([]);
+   console.log("actions", actions);
 
-   const handleSubmit = (values: Action, { resetForm }: any) => {
-      setActions((prev) => [...prev, values]);
-      resetForm();
+   useEffect(() => {
+      console.log("useEffect triggered");
+      const fetchActions = async () => {
+         try {
+            // Fetch from IndexedDB
+            const localActions = await getActionsFromIndexedDB();
+            setActions(localActions);
+
+            // // Fetch from DynamoDB
+            // const response = await fetch("/api/actions");
+            // console.log("initial load response", response);
+            // if (response.ok) {
+            //    const data = await response.json();
+            //    setActions((prev) => [...prev, ...data]);
+            // } else {
+            //    console.error("Failed to fetch actions");
+            // }
+         } catch (error) {
+            console.error("Error fetching actions:", error);
+         }
+      };
+
+      fetchActions();
+   }, []);
+
+   const handleSubmit = async (values: Action, { resetForm }: any) => {
+      try {
+         // Save to IndexedDB
+         await saveActionToIndexedDB(values);
+         setActions((prev) => [...prev, values]);
+
+         // // Save to DynamoDB
+         // const response = await fetch("/api/actions", {
+         //    method: "POST",
+         //    headers: {
+         //       "Content-Type": "application/json",
+         //    },
+         //    body: JSON.stringify({ action: values }),
+         // });
+
+         // console.log("response", response);
+
+         // if (!response.ok) {
+         //    console.error("Failed to save action to DynamoDB");
+         // }
+
+         resetForm();
+      } catch (error) {
+         console.error("Error saving action:", error);
+      }
    };
 
    const groupedActions = actions.reduce<Record<string, Action[]>>(
