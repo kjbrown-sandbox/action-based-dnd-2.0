@@ -33,12 +33,14 @@ export default function Home() {
                   level: 1,
                   class: "Fighter",
                   race: "Human",
-                  armorClass: 0,
-                  initiativeBonus: 0,
-                  speed: 0,
-                  currentHP: 0,
-                  maxHP: 0,
-                  hitDice: "",
+                  background: "Soldier",
+                  armorClass: 15,
+                  initiativeBonus: 2,
+                  speed: 30,
+                  currentHP: 10,
+                  maxHP: 10,
+                  tempHP: 0,
+                  hitDice: "1d10",
                   deathSaves: {
                      successes: 0,
                      failures: 0,
@@ -88,70 +90,241 @@ export default function Home() {
    return (
       <div className="min-h-screen bg-contrast-0 text-white flex flex-col">
          {/* Navbar */}
-         <div className="bg-contrast-1 p-4 flex justify-between items-center">
+         <div className="bg-contrast-1 p-4 flex justify-between items-start gap-8">
             {character ? (
                <>
-                  <div>
-                     <label>Name: </label>
-                     <input
-                        type="text"
-                        value={character.name}
-                        onChange={(e) =>
-                           handleCharacterChange("name", e.target.value)
-                        }
-                        onBlur={(e) =>
-                           handleCharacterChange("name", e.target.value)
-                        }
-                        className="bg-contrast-3 text-white p-1 rounded"
-                     />
+                  {/* First Section */}
+                  <div className="flex flex-col gap-2">
+                     <div>
+                        <label className="block font-bold">Name:</label>
+                        <input
+                           type="text"
+                           value={character.name}
+                           onChange={(e) =>
+                              handleCharacterChange("name", e.target.value)
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange("name", e.target.value)
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                           <label className="block font-bold">Level:</label>
+                           <input
+                              type="number"
+                              value={character.level}
+                              onChange={(e) =>
+                                 handleCharacterChange(
+                                    "level",
+                                    parseInt(e.target.value)
+                                 )
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange(
+                                    "level",
+                                    parseInt(e.target.value)
+                                 )
+                              }
+                              className="bg-contrast-3 text-white p-1 rounded w-full"
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Class:</label>
+                           <input
+                              type="text"
+                              value={character.class}
+                              onChange={(e) =>
+                                 handleCharacterChange("class", e.target.value)
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("class", e.target.value)
+                              }
+                              className="bg-contrast-3 text-white p-1 rounded w-full"
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Race:</label>
+                           <input
+                              type="text"
+                              value={character.race}
+                              onChange={(e) =>
+                                 handleCharacterChange("race", e.target.value)
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("race", e.target.value)
+                              }
+                              className="bg-contrast-3 text-white p-1 rounded w-full"
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">
+                              Background:
+                           </label>
+                           <input
+                              type="text"
+                              value={character.background || ""}
+                              onChange={(e) =>
+                                 handleCharacterChange(
+                                    "background",
+                                    e.target.value
+                                 )
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange(
+                                    "background",
+                                    e.target.value
+                                 )
+                              }
+                              className="bg-contrast-3 text-white p-1 rounded w-full"
+                           />
+                        </div>
+                     </div>
                   </div>
-                  <div>
-                     <label>Level: </label>
-                     <input
-                        type="number"
-                        value={character.level}
-                        onChange={(e) =>
-                           handleCharacterChange(
-                              "level",
-                              parseInt(e.target.value)
-                           )
-                        }
-                        onBlur={(e) =>
-                           handleCharacterChange(
-                              "level",
-                              parseInt(e.target.value)
-                           )
-                        }
-                        className="bg-contrast-3 text-white p-1 rounded"
-                     />
+
+                  {/* Middle Section */}
+                  <div className="grid grid-cols-3 gap-4">
+                     <div>
+                        <label className="block font-bold">Armor Class:</label>
+                        <input
+                           type="number"
+                           value={character.armorClass}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "armorClass",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "armorClass",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">
+                           Initiative Bonus:
+                        </label>
+                        <input
+                           type="number"
+                           value={character.initiativeBonus}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "initiativeBonus",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "initiativeBonus",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Speed:</label>
+                        <input
+                           type="number"
+                           value={character.speed}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "speed",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "speed",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Hit Dice:</label>
+                        <input
+                           type="text"
+                           value={character.hitDice}
+                           onChange={(e) =>
+                              handleCharacterChange("hitDice", e.target.value)
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange("hitDice", e.target.value)
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
                   </div>
-                  <div>
-                     <label>Class: </label>
-                     <input
-                        type="text"
-                        value={character.class}
-                        onChange={(e) =>
-                           handleCharacterChange("class", e.target.value)
-                        }
-                        onBlur={(e) =>
-                           handleCharacterChange("class", e.target.value)
-                        }
-                        className="bg-contrast-3 text-white p-1 rounded"
-                     />
-                  </div>
-                  <div>
-                     <label>Race: </label>
-                     <input
-                        type="text"
-                        value={character.race}
-                        onChange={(e) =>
-                           handleCharacterChange("race", e.target.value)
-                        }
-                        onBlur={(e) =>
-                           handleCharacterChange("race", e.target.value)
-                        }
-                        className="bg-contrast-3 text-white p-1 rounded"
-                     />
+
+                  {/* Last Section */}
+                  <div className="grid grid-cols-3 gap-4">
+                     <div>
+                        <label className="block font-bold">Current HP:</label>
+                        <input
+                           type="number"
+                           value={character.currentHP}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "currentHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "currentHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Max HP:</label>
+                        <input
+                           type="number"
+                           value={character.maxHP}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "maxHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "maxHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Temp HP:</label>
+                        <input
+                           type="number"
+                           value={character.tempHP || 0}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "tempHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "tempHP",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
                   </div>
                </>
             ) : (

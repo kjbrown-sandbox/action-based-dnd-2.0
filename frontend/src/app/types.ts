@@ -59,6 +59,7 @@ export type Character = {
    class: string;
    subclass?: string;
    race: string;
+   background?: string;
    armorClass: number;
    initiativeBonus: number;
    speed: number;
