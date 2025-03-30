@@ -1,3 +1,4 @@
+import { Action } from "app/types";
 import { openDB } from "idb";
 
 const DB_NAME = "ActionBasedDnD";
@@ -16,12 +17,35 @@ export async function initDB() {
    });
 }
 
-export async function saveActionToIndexedDB(action: any) {
+export async function saveActionToIndexedDB(action: Action): Promise<void> {
    const db = await initDB();
-   await db.add(STORE_NAME, action);
+   const tx = db.transaction(STORE_NAME, "readwrite");
+   const store = tx.objectStore(STORE_NAME);
+
+   // Check if the action already exists
+   const existingAction = await store.get(action.id);
+
+   if (existingAction) {
+      // Update the existing action
+      await store.put(action);
+   } else {
+      // Add a new action
+      await store.add(action);
+   }
+
+   await tx.done;
 }
 
-export async function getActionsFromIndexedDB() {
+export async function getActionsFromIndexedDB(): Promise<Action[]> {
    const db = await initDB();
-   return await db.getAll(STORE_NAME);
+   const tx = db.transaction(STORE_NAME, "readonly");
+   const store = tx.objectStore(STORE_NAME);
+   const allActions = await store.getAll();
+   const allKeys = await store.getAllKeys();
+
+   // Combine actions with their IDs
+   return allActions.map((action, index) => ({
+      ...action,
+      id: allKeys[index],
+   }));
 }

@@ -77,7 +77,7 @@ export default function Home() {
       {}
    );
 
-   type FormValues = Omit<Action, "triggers"> & { triggers: string };
+   type FormValues = Omit<Action, "triggers" | "id"> & { triggers: string };
    return (
       <div className="min-h-screen bg-contrast-0 text-white flex p-8">
          {/* Left Section: Form */}

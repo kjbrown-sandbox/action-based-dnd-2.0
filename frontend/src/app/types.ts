@@ -41,6 +41,7 @@ export interface Attack {
 }
 
 export interface Action {
+   id: string;
    title: string;
    description?: string;
    time?: TimeAction;
