@@ -52,3 +52,19 @@ export interface Action {
 export interface CharacterData {
    actions: Action[];
 }
+
+export type Character = {
+   name: string;
+   level: number;
+   class: string;
+   subclass?: string;
+   race: string;
+   armorClass: number;
+   initiativeBonus: number;
+   speed: number;
+   currentHP: number;
+   maxHP: number;
+   tempHP?: number;
+   hitDice: string;
+   deathSaves: { successes: number; failures: number };
+};
