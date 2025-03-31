@@ -11,6 +11,7 @@ import {
    saveCharacterToIndexedDB,
    getCharacterFromIndexedDB,
 } from "../lib/indexedDB";
+import { Divider } from "@/components/ui/Divider";
 
 export default function Home() {
    const [actions, setActions] = useState<Action[]>([]);
@@ -40,7 +41,8 @@ export default function Home() {
                   currentHP: 10,
                   maxHP: 10,
                   tempHP: 0,
-                  hitDice: "1d10",
+                  currentHitDice: "1d10",
+                  maxHitDice: "1d10",
                   deathSaves: {
                      successes: 0,
                      failures: 0,
@@ -88,7 +90,7 @@ export default function Home() {
    type FormValues = Omit<Action, "triggers" | "id"> & { triggers: string };
 
    return (
-      <div className="min-h-screen bg-contrast-0 text-white flex flex-col">
+      <div className="min-h-screen h-200 bg-contrast-0 text-white flex flex-col">
          {/* Navbar */}
          <div className="bg-contrast-1 p-4 flex justify-between items-start gap-8">
             {character ? (
@@ -183,6 +185,7 @@ export default function Home() {
                      </div>
                   </div>
 
+                  <Divider orientation="vertical" gutter="1rem" />
                   {/* Middle Section */}
                   <div className="grid grid-cols-3 gap-4">
                      <div>
@@ -247,16 +250,48 @@ export default function Home() {
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
+                  </div>
+
+                  {/* New Section: Hit Dice */}
+                  <div className="flex flex-col gap-2">
                      <div>
-                        <label className="block font-bold">Hit Dice:</label>
+                        <label className="block font-bold">
+                           Current Hit Dice:
+                        </label>
                         <input
                            type="text"
-                           value={character.hitDice}
+                           value={character.currentHitDice}
                            onChange={(e) =>
-                              handleCharacterChange("hitDice", e.target.value)
+                              handleCharacterChange(
+                                 "currentHitDice",
+                                 e.target.value
+                              )
                            }
                            onBlur={(e) =>
-                              handleCharacterChange("hitDice", e.target.value)
+                              handleCharacterChange(
+                                 "currentHitDice",
+                                 e.target.value
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Max Hit Dice:</label>
+                        <input
+                           type="text"
+                           value={character.maxHitDice}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "maxHitDice",
+                                 e.target.value
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "maxHitDice",
+                                 e.target.value
+                              )
                            }
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
@@ -357,6 +392,7 @@ export default function Home() {
                >
                   {() => (
                      <Form className="bg-contrast-2 p-6 rounded shadow-md w-full max-w-md">
+                        <Divider />
                         <h2 className="text-xl font-bold mb-4">
                            Add New Action
                         </h2>

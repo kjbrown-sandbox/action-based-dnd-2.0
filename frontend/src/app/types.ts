@@ -66,6 +66,7 @@ export type Character = {
    currentHP: number;
    maxHP: number;
    tempHP?: number;
-   hitDice: string;
+   currentHitDice: string; // Added currentHitDice
+   maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };
 };
