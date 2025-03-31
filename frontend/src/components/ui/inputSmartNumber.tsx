@@ -3,6 +3,7 @@
 import React, { ChangeEventHandler, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { evaluate } from "mathjs";
+import { Minus, Plus } from "lucide-react";
 
 interface InputSmartNumberProps
    extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -16,7 +17,18 @@ export default function InputSmartNumber({
    value,
    ...props
 }: InputSmartNumberProps) {
-   // const [inputValue, setInputValue] = useState<string>("");
+   const incrementValue = (amount: number) => {
+      const calculatedValue = evaluateExpression(`${value}`) || 0;
+      const newValue = calculatedValue + amount;
+      if (onChange) {
+         const customEvent = {
+            target: {
+               value: newValue ? newValue.toString() : `${value}`,
+            },
+         };
+         onChange(customEvent as React.FocusEvent<HTMLInputElement>);
+      }
+   };
 
    const evaluateExpression = (expression: string): number => {
       try {
@@ -30,15 +42,8 @@ export default function InputSmartNumber({
    };
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // const value = e.target.value;
-      // setInputValue(value);
       console.log("smart", e.target.value);
       onChange?.(e);
-
-      // const calculatedValue = evaluateExpression(value);
-      // if (!isNaN(calculatedValue) && onChange) {
-      //    onChange(calculatedValue);
-      // }
    };
 
    const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -58,11 +63,34 @@ export default function InputSmartNumber({
    };
 
    return (
-      <Input
-         {...props}
-         value={value}
-         onChange={handleInputChange}
-         onBlur={handleInputBlur}
-      />
+      <div className="relative group">
+         <Input
+            {...props}
+            value={value}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            className="pr-10" // Add padding to avoid overlap with icons
+         />
+
+         {/* Increment and Decrement Icons */}
+         <div className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 flex flex-col items-center gap-1 pr-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+               type="button"
+               onClick={() => incrementValue(1)}
+               className="p-1 rounded hover:bg-contrast-2 hover:bg-opacity-50"
+               aria-label="Increment"
+            >
+               <Plus size={20} />
+            </button>
+            <button
+               type="button"
+               onClick={() => incrementValue(-1)}
+               className="p-1 rounded hover:bg-contrast-2 hover:bg-opacity-50"
+               aria-label="Decrement"
+            >
+               <Minus size={20} />
+            </button>
+         </div>
+      </div>
    );
 }
