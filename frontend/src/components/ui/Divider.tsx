@@ -2,8 +2,8 @@ import React from "react";
 
 type DividerProps = {
    orientation?: "horizontal" | "vertical";
-   size?: "full" | "lg" | "md" | "sm"; // Size of the divider
-   color?: string; // Optional color for the divider
+   size?: "full" | "lg" | "md" | "sm";
+   color?: string;
 };
 
 export const Divider: React.FC<DividerProps> = ({
@@ -19,14 +19,9 @@ export const Divider: React.FC<DividerProps> = ({
       sm: "1/4",
    };
 
-   // return isHorizontal ? (
-   //    <div className={`bg-${color} h-px w-1/2`} />
-   // ) : (
-   //    <div className={`bg-${color} w-px h-full mx-${fillPercentage} my-0`} />
-   // );
    return isHorizontal ? (
       <div className={`bg-${color} h-px w-${sizeChart[size]} mx-auto`} />
    ) : (
-      <div className={`bg-${color} w-px y-${sizeChart[size]} my-auto`} />
+      <div className={`bg-${color} w-px h-${sizeChart[size]} my-auto`} />
    );
 };
