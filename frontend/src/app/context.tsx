@@ -33,16 +33,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             } else {
                const defaultCharacter: Character = {
                   name: "New Character",
-                  level: 1,
+                  level: "1",
                   class: "Fighter",
                   race: "Human",
                   background: "Soldier",
-                  armorClass: 15,
-                  initiativeBonus: 2,
-                  speed: 30,
-                  currentHP: 10,
-                  maxHP: 10,
-                  tempHP: 0,
+                  armorClass: "15",
+                  initiativeBonus: "2",
+                  speed: "30",
+                  currentHP: "10",
+                  maxHP: "10",
+                  tempHP: "0",
                   currentHitDice: "1d10",
                   maxHitDice: "1d10",
                   deathSaves: {

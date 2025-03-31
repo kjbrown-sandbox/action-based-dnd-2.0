@@ -129,7 +129,7 @@ export default function Navbar() {
                      </div>
                   </div>
 
-                  <Divider orientation="vertical" gutter="1rem" />
+                  <Divider orientation="vertical" />
                   {/* Middle Section */}
                   <div className="grid grid-cols-3 gap-4">
                      <div>
