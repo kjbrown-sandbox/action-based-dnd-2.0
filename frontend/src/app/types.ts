@@ -55,17 +55,17 @@ export interface CharacterData {
 
 export type Character = {
    name: string;
-   level: number;
+   level: string;
    class: string;
    subclass?: string;
    race: string;
    background?: string;
-   armorClass: number;
-   initiativeBonus: number;
-   speed: number;
-   currentHP: number;
-   maxHP: number;
-   tempHP?: number;
+   armorClass: string;
+   initiativeBonus: string;
+   speed: string;
+   currentHP: string;
+   maxHP: string;
+   tempHP?: string;
    currentHitDice: string; // Added currentHitDice
    maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };

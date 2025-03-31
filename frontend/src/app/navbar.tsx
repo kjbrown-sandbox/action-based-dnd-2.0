@@ -6,6 +6,7 @@ import { saveCharacterToIndexedDB } from "../lib/indexedDB";
 import { AppContext } from "./context";
 import "./globals.css";
 import { Character } from "./types";
+import InputSmartNumber from "@/components/ui/inputSmartNumber";
 
 export default function Navbar() {
    const context = useContext(AppContext);
@@ -25,7 +26,7 @@ export default function Navbar() {
    return (
       <>
          {/* Navbar */}
-         <div className="bg-contrast-1 p-4 flex justify-between items-start gap-8">
+         <div className="bg-contrast-1 p-4 m-4 flex rounded justify-between items-start gap-8">
             {character ? (
                <>
                   {/* First Section */}
@@ -47,7 +48,7 @@ export default function Navbar() {
                      <div className="grid grid-cols-2 gap-4">
                         <div>
                            <label className="block font-bold">Level:</label>
-                           <input
+                           {/* <input
                               type="number"
                               value={character.level}
                               onChange={(e) =>
@@ -61,6 +62,16 @@ export default function Navbar() {
                                     "level",
                                     parseInt(e.target.value)
                                  )
+                              }
+                              className="bg-contrast-3 text-white p-1 rounded w-full"
+                           /> */}
+                           <InputSmartNumber
+                              value={character.level}
+                              onChange={(e) =>
+                                 handleCharacterChange("level", e.target.value)
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("level", e.target.value)
                               }
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />

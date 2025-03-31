@@ -26,8 +26,10 @@ export default function Home() {
    return (
       <div className="min-h-screen h-200 bg-contrast-0 text-white flex flex-col">
          <Navbar />
-         <ExtraInfoPanels />
-         <ActionsDisplay />
+         <div className="flex-1 flex bg-contrast-0">
+            <ExtraInfoPanels />
+            <ActionsDisplay />
+         </div>
       </div>
    );
 }
