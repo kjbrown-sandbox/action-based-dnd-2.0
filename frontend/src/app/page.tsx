@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
 import { Action, Character } from "./types";
@@ -12,52 +12,15 @@ import {
    getCharacterFromIndexedDB,
 } from "../lib/indexedDB";
 import { Divider } from "@/components/ui/Divider";
+import { AppContext } from "./context";
 
 export default function Home() {
-   const [actions, setActions] = useState<Action[]>([]);
-   const [character, setCharacter] = useState<Character | null>(null);
-   console.log("character", character);
+   const context = useContext(AppContext);
+   if (!context) {
+      throw new Error("AppContext must be used within a Provider");
+   }
 
-   useEffect(() => {
-      const fetchData = async () => {
-         try {
-            const localActions = await getActionsFromIndexedDB();
-            setActions(localActions);
-
-            const localCharacter = await getCharacterFromIndexedDB();
-            console.log("localCharacter", localCharacter);
-            if (localCharacter) {
-               setCharacter(localCharacter);
-            } else {
-               const defaultCharacter: Character = {
-                  name: "New Character",
-                  level: 1,
-                  class: "Fighter",
-                  race: "Human",
-                  background: "Soldier",
-                  armorClass: 15,
-                  initiativeBonus: 2,
-                  speed: 30,
-                  currentHP: 10,
-                  maxHP: 10,
-                  tempHP: 0,
-                  currentHitDice: "1d10",
-                  maxHitDice: "1d10",
-                  deathSaves: {
-                     successes: 0,
-                     failures: 0,
-                  },
-               };
-               setCharacter(defaultCharacter);
-               await saveCharacterToIndexedDB(defaultCharacter);
-            }
-         } catch (error) {
-            console.error("Error fetching data:", error);
-         }
-      };
-
-      fetchData();
-   }, []);
+   const { actions, setActions, character, setCharacter } = context;
 
    const handleCharacterChange = async (key: keyof Character, value: any) => {
       if (!character) return;
