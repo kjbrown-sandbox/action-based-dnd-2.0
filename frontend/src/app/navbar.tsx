@@ -42,8 +42,11 @@ export default function Navbar() {
       await saveCharacterToIndexedDB(updatedCharacter);
    };
 
-   const handleCharacterSelect = async (id: number) => {
-      const selectedCharacter = allCharacters.find((char) => char.id === id);
+   const handleCharacterSelect = async (id: string) => {
+      const idAsNumber = Number(id);
+      const selectedCharacter = allCharacters.find(
+         (char) => char.id === idAsNumber
+      );
       if (selectedCharacter) {
          setCharacter(selectedCharacter);
       }
@@ -62,11 +65,12 @@ export default function Navbar() {
                      </label>
                      <Autocomplete
                         items={allCharacters.map((char) => ({
-                           key: char.id,
-                           value: char.name,
+                           value: char.id.toString(),
+                           label: char.name,
                         }))}
                         onSelect={handleCharacterSelect}
                         placeholder="Select a character"
+                        value={character.id.toString()}
                      />
                   </div>
 

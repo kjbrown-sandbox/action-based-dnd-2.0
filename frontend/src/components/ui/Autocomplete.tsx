@@ -20,8 +20,9 @@ import {
 } from "@/components/ui/popover";
 
 interface AutocompleteProps<T> {
-   items: { key: T; value: string }[]; // List of items with key/value shape
-   onSelect: (key: T) => void; // Callback when an item is selected
+   items: { value: string; label: string }[]; // List of items with value/label shape
+   value: string | null; // Currently selected value
+   onSelect: (value: string) => void; // Callback when an item is selected
    placeholder?: string; // Placeholder text for the input
    buttonClassName?: string; // Optional className for the button
    inputClassName?: string; // Optional className for the input
@@ -30,6 +31,7 @@ interface AutocompleteProps<T> {
 
 export function Autocomplete<T>({
    items,
+   value,
    onSelect,
    placeholder = "Select an item...",
    buttonClassName,
@@ -37,9 +39,8 @@ export function Autocomplete<T>({
    contentClassName,
 }: AutocompleteProps<T>) {
    const [open, setOpen] = React.useState(false);
-   const [selectedKey, setSelectedKey] = React.useState<T | null>(null);
 
-   const selectedItem = items.find((item) => item.key === selectedKey);
+   const selectedItem = items.find((item) => item.value === value);
 
    return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -50,7 +51,7 @@ export function Autocomplete<T>({
                aria-expanded={open}
                className={cn("w-[200px] justify-between", buttonClassName)}
             >
-               {selectedItem ? selectedItem.value : placeholder}
+               {selectedItem ? selectedItem.label : placeholder}
                <ChevronsUpDown className="opacity-50" />
             </Button>
          </PopoverTrigger>
@@ -65,19 +66,18 @@ export function Autocomplete<T>({
                   <CommandGroup>
                      {items.map((item) => (
                         <CommandItem
-                           key={String(item.key)}
+                           key={String(item.value)}
                            value={item.value}
                            onSelect={() => {
-                              setSelectedKey(item.key);
-                              onSelect(item.key);
+                              onSelect(item.value);
                               setOpen(false);
                            }}
                         >
-                           {item.value}
+                           {item.label}
                            <Check
                               className={cn(
                                  "ml-auto",
-                                 selectedKey === item.key
+                                 value === item.value
                                     ? "opacity-100"
                                     : "opacity-0"
                               )}
