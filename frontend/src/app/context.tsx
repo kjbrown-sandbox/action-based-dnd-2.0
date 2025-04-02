@@ -24,14 +24,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const localActions = await getActionsFromIndexedDB();
-            setActions(localActions);
-
             const localCharacter = await getCharacterFromIndexedDB();
             if (localCharacter) {
                setCharacter(localCharacter);
             } else {
                const defaultCharacter: Character = {
+                  id: "default-character-id", // Added ID for character
                   name: "New Character",
                   level: "1",
                   class: "Fighter",
@@ -60,6 +58,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       fetchData();
    }, []);
+
+   useEffect(() => {
+      const fetchActions = async () => {
+         try {
+            if (character) {
+               const localActions = await getActionsFromIndexedDB(character.id);
+               setActions(localActions);
+            }
+         } catch (error) {
+            console.error("Error fetching actions:", error);
+         }
+      };
+
+      fetchActions();
+   }, [character]);
 
    return (
       <AppContext.Provider

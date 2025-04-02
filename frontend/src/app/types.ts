@@ -42,6 +42,7 @@ export interface Attack {
 
 export interface Action {
    id: string;
+   characterID: string;
    title: string;
    description?: string;
    time?: TimeAction;
@@ -54,6 +55,7 @@ export interface CharacterData {
 }
 
 export type Character = {
+   id: string;
    name: string;
    level: string;
    class: string;

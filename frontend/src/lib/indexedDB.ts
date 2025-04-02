@@ -6,13 +6,16 @@ const ACTION_STORE = "actions";
 const CHARACTER_STORE = "character";
 
 export async function initDB() {
-   return openDB(DB_NAME, 2, {
+   return openDB(DB_NAME, 4, {
       upgrade(db) {
          if (!db.objectStoreNames.contains(ACTION_STORE)) {
-            db.createObjectStore(ACTION_STORE, {
+            const store = db.createObjectStore(ACTION_STORE, {
                keyPath: "id",
                autoIncrement: true,
             });
+            if (!store.indexNames.contains("characterID")) {
+               store.createIndex("characterID", "characterID"); // Add index on characterID
+            }
          }
          if (!db.objectStoreNames.contains(CHARACTER_STORE)) {
             db.createObjectStore(CHARACTER_STORE, {
@@ -48,18 +51,16 @@ export async function saveActionToIndexedDB(action: Action): Promise<Action> {
    return { ...action, id: actionId };
 }
 
-export async function getActionsFromIndexedDB(): Promise<Action[]> {
+export async function getActionsFromIndexedDB(
+   characterID: string
+): Promise<Action[]> {
    const db = await initDB();
    const tx = db.transaction(ACTION_STORE, "readonly");
    const store = tx.objectStore(ACTION_STORE);
-   const allActions = await store.getAll();
-   const allKeys = await store.getAllKeys();
-
-   // Combine actions with their IDs
-   return allActions.map((action, index) => ({
-      ...action,
-      id: allKeys[index],
-   }));
+   const index = store.index("characterID");
+   const actions = await index.getAll(characterID); // Fetch actions by characterID
+   await tx.done;
+   return actions;
 }
 
 export async function saveCharacterToIndexedDB(
