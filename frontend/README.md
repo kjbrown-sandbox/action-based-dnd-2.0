@@ -38,3 +38,27 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # A custom-first, action-centered character sheet
 
 This is an interactive character sheet built for Dungeons and Dragons. The goal was to make something easy to use, as automatic as possible, and still give you the flexibility you need for anything homebrew or outside the ordinary.
+
+## To do:
+
+-  [ ] Can add multiple characters
+-  [ ] Attributes
+-  [ ] Skills
+   -  [ ] Half proficient, full proficient, double proficient
+-  [ ] Attacks/spells need to be connected to ability scores
+-  [ ] Inventory - add items
+   -  [ ] Need to show up somewhere in actions list
+   -  [ ] Would be nice if they could store charges and amount
+   -  [ ] Special option for weapons, can add more fields
+-  [ ] Spells
+   -  [ ] Maybe its own tab for unprepared spells?
+-  [ ] Clicking on stuff lets you roll dice
+   -  [ ] Abilities
+   -  [ ] Skills
+   -  [ ] Actions
+   -  [ ] Items
+   -  [ ] Spells
+-  [ ] Add "events" - short/long rest that gives HP, hit dice, refills charges/spells, etc.
+-  [ ] At least one place to put notes/descriptions/thoughts
+-  [ ] Money
+-  [ ] Potentially rename "trigger" to something else
