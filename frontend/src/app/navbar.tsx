@@ -1,12 +1,17 @@
 "use client";
 
 import { Divider } from "@/components/ui/Divider";
-import { useContext } from "react";
-import { saveCharacterToIndexedDB } from "../lib/indexedDB";
+import { useContext, useEffect, useState } from "react";
+import {
+   saveCharacterToIndexedDB,
+   getCharacterFromIndexedDB,
+   getAllCharactersFromIndexedDB,
+} from "../lib/indexedDB";
 import { AppContext } from "./context";
 import "./globals.css";
-import { Character } from "./types";
+import { Character, LAST_USED_CHARACTER_ID } from "./types";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
+import { Autocomplete } from "@/components/ui/Autocomplete";
 
 export default function Navbar() {
    const context = useContext(AppContext);
@@ -15,12 +20,33 @@ export default function Navbar() {
    }
 
    const { character, setCharacter } = context;
+   console.log("### Character:", character);
+   const [allCharacters, setAllCharacters] = useState<Character[]>([]);
+   console.log("Navbar character", character);
+   console.log("Navbar allCharacters", allCharacters);
+
+   useEffect(() => {
+      const fetchCharacters = async () => {
+         const characters = await getAllCharactersFromIndexedDB(); // Fetch all characters
+         setAllCharacters(characters); // Assuming single character for now
+      };
+
+      fetchCharacters();
+   }, [character]);
 
    const handleCharacterChange = async (key: keyof Character, value: any) => {
       if (!character) return;
       const updatedCharacter = { ...character, [key]: value };
       setCharacter(updatedCharacter);
+      localStorage.setItem(LAST_USED_CHARACTER_ID, `${updatedCharacter.id}`); // Save the character ID to local storage
       await saveCharacterToIndexedDB(updatedCharacter);
+   };
+
+   const handleCharacterSelect = async (id: number) => {
+      const selectedCharacter = allCharacters.find((char) => char.id === id);
+      if (selectedCharacter) {
+         setCharacter(selectedCharacter);
+      }
    };
 
    return (
@@ -29,6 +55,21 @@ export default function Navbar() {
          <div className="bg-contrast-1 p-4 m-4 flex rounded justify-between items-start gap-8">
             {character ? (
                <>
+                  {/* Character Selection */}
+                  <div className="w-full mb-4">
+                     <label className="block font-bold mb-2">
+                        Select Character:
+                     </label>
+                     <Autocomplete
+                        items={allCharacters.map((char) => ({
+                           key: char.id,
+                           value: char.name,
+                        }))}
+                        onSelect={handleCharacterSelect}
+                        placeholder="Select a character"
+                     />
+                  </div>
+
                   {/* First Section */}
                   <div className="flex flex-col gap-2">
                      <div>
@@ -48,23 +89,6 @@ export default function Navbar() {
                      <div className="grid grid-cols-2 gap-4">
                         <div>
                            <label className="block font-bold">Level:</label>
-                           {/* <input
-                              type="number"
-                              value={character.level}
-                              onChange={(e) =>
-                                 handleCharacterChange(
-                                    "level",
-                                    parseInt(e.target.value)
-                                 )
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange(
-                                    "level",
-                                    parseInt(e.target.value)
-                                 )
-                              }
-                              className="bg-contrast-3 text-white p-1 rounded w-full"
-                           /> */}
                            <InputSmartNumber
                               value={character.level}
                               onChange={(e) =>

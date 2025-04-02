@@ -41,8 +41,8 @@ export interface Attack {
 }
 
 export interface Action {
-   id: string;
-   characterID: string;
+   id: number;
+   characterID: number;
    title: string;
    description?: string;
    time?: TimeAction;
@@ -55,7 +55,7 @@ export interface CharacterData {
 }
 
 export type Character = {
-   id: string;
+   id: number;
    name: string;
    level: string;
    class: string;
@@ -72,3 +72,5 @@ export type Character = {
    maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };
 };
+
+export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";

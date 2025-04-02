@@ -6,17 +6,24 @@ const ACTION_STORE = "actions";
 const CHARACTER_STORE = "character";
 
 export async function initDB() {
-   return openDB(DB_NAME, 4, {
-      upgrade(db) {
+   return openDB(DB_NAME, 6, {
+      upgrade(db, oldVersion, newVersion, transaction) {
+         // Action
          if (!db.objectStoreNames.contains(ACTION_STORE)) {
-            const store = db.createObjectStore(ACTION_STORE, {
+            db.createObjectStore(ACTION_STORE, {
                keyPath: "id",
                autoIncrement: true,
             });
-            if (!store.indexNames.contains("characterID")) {
-               store.createIndex("characterID", "characterID"); // Add index on characterID
-            }
          }
+
+         const actionStore = transaction.objectStore(ACTION_STORE);
+         if (!actionStore.indexNames.contains("characterID")) {
+            actionStore.createIndex("characterID", "characterID", {
+               unique: false,
+            }); // Add index on characterID
+         }
+
+         // Character
          if (!db.objectStoreNames.contains(CHARACTER_STORE)) {
             db.createObjectStore(CHARACTER_STORE, {
                keyPath: "id",
@@ -32,7 +39,7 @@ export async function saveActionToIndexedDB(action: Action): Promise<Action> {
    const tx = db.transaction(ACTION_STORE, "readwrite");
    const store = tx.objectStore(ACTION_STORE);
 
-   let actionId: string;
+   let actionId: number;
 
    // Check if the action already exists
    const existingAction = await store.get(action.id);
@@ -42,7 +49,7 @@ export async function saveActionToIndexedDB(action: Action): Promise<Action> {
       actionId = action.id;
    } else {
       // Add a new action
-      actionId = (await store.add(action)) as string;
+      actionId = (await store.add(action)).valueOf() as number;
    }
 
    await tx.done;
@@ -52,7 +59,7 @@ export async function saveActionToIndexedDB(action: Action): Promise<Action> {
 }
 
 export async function getActionsFromIndexedDB(
-   characterID: string
+   characterID: number
 ): Promise<Action[]> {
    const db = await initDB();
    const tx = db.transaction(ACTION_STORE, "readonly");
@@ -64,7 +71,7 @@ export async function getActionsFromIndexedDB(
 }
 
 export async function saveCharacterToIndexedDB(
-   character: Character
+   character: Omit<Character, "id"> & { id?: number }
 ): Promise<Character> {
    console.log("saving this character", character);
 
@@ -72,20 +79,42 @@ export async function saveCharacterToIndexedDB(
    const tx = db.transaction(CHARACTER_STORE, "readwrite");
    const store = tx.objectStore(CHARACTER_STORE);
 
-   // Update the existing action
-   await store.put(character);
+   if ((character.id || 0) <= 0) {
+      delete character.id; // Remove the ID to allow auto-increment
+   }
 
+   // Check if the character already exists
+   const existingCharacter = await store.get(character?.id || "");
+   let characterId = character.id;
+   if (existingCharacter) {
+      await store.put(character);
+   } else {
+      const newId = await store.add(character);
+      characterId = newId.valueOf() as number;
+   }
    await tx.done;
 
-   // Return the newly created/updated action
-   return character;
+   return { ...character, id: characterId! };
 }
 
-export async function getCharacterFromIndexedDB(): Promise<Character | null> {
+export async function getCharacterFromIndexedDB(
+   characterID: number
+): Promise<Character | null> {
+   const db = await initDB();
+   const tx = db.transaction(CHARACTER_STORE, "readonly");
+   const store = tx.objectStore(CHARACTER_STORE);
+
+   console.log("## database ID", characterID);
+   const character = await store.get(characterID); // Retrieve character by ID
+   console.log("found by the database", character);
+   return character || null; // Return the character or null if not found
+}
+
+export async function getAllCharactersFromIndexedDB(): Promise<Character[]> {
    const db = await initDB();
    const tx = db.transaction(CHARACTER_STORE, "readonly");
    const store = tx.objectStore(CHARACTER_STORE);
 
    const allCharacters = await store.getAll(); // Retrieve all characters
-   return allCharacters.length > 0 ? allCharacters[0] : null; // Return the first character or null
+   return allCharacters; // Return all characters
 }

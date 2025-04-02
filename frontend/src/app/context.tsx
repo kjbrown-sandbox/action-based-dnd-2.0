@@ -1,12 +1,13 @@
 "use client";
 
 import React, { createContext, useState, useEffect } from "react";
-import { Action, Character } from "./types";
+import { Action, Character, LAST_USED_CHARACTER_ID } from "./types";
 import {
    saveActionToIndexedDB,
    getActionsFromIndexedDB,
    saveCharacterToIndexedDB,
    getCharacterFromIndexedDB,
+   getAllCharactersFromIndexedDB,
 } from "../lib/indexedDB";
 
 // Define the context
@@ -24,12 +25,29 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
    useEffect(() => {
       const fetchData = async () => {
          try {
-            const localCharacter = await getCharacterFromIndexedDB();
+            const localStorageCharacterID = localStorage.getItem(
+               LAST_USED_CHARACTER_ID
+            );
+            const idAsNumber = Number(localStorageCharacterID);
+            if (isNaN(idAsNumber)) {
+               console.error(
+                  "Invalid character ID in localStorage. Expected a number."
+               );
+               return;
+            }
+
+            console.log("localStorageCharacterID", localStorageCharacterID);
+            const localCharacter = await getCharacterFromIndexedDB(
+               idAsNumber || -1
+            );
+            console.log("localCharacter", localCharacter);
+
             if (localCharacter) {
                setCharacter(localCharacter);
+               console.log("Found character in IndexedDB:", localCharacter);
             } else {
                const defaultCharacter: Character = {
-                  id: "default-character-id", // Added ID for character
+                  id: -1,
                   name: "New Character",
                   level: "1",
                   class: "Fighter",
