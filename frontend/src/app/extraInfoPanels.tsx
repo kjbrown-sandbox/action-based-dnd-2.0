@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
-import { Action, Character } from "./types";
+import { Action, Attribute, Character } from "./types";
 import { Button } from "../components/ui/button";
 import { saveActionToIndexedDB } from "../lib/indexedDB";
 import { Divider } from "@/components/ui/Divider";
@@ -185,21 +185,25 @@ export default function ExtraInfoPanels() {
                   <div key={key} className="flex flex-col items-center">
                      <div className="text-sm font-bold mb-1">{title}</div>
                      <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
-                        {calculateModifier(
-                           character?.[key as keyof Character] || 10
-                        )}
+                        {(
+                           character?.[key as keyof Character] as Attribute
+                        )?.getModifierString() ?? 10}
                      </div>
-                     <InputSmartNumber
-                        value={character?.[key as keyof Character] || 10}
-                        onChange={(value) =>
-                           handleAttributeChange(
-                              key as keyof Character,
-                              Number(value.target.value)
-                           )
-                        }
-                        // className="bg-contrast-3 text-white w-100 text-center rounded mt-2"
-                        className="w-10 text-contrast-10 bg-contrast-3 opacity-100 rounded mt-[-10px]"
-                     />
+                     <div className="bg-contrast-3 relative top-[-15px]">
+                        <InputSmartNumber
+                           value={
+                              (character?.[key as keyof Character] as Attribute)
+                                 .amount ?? 10
+                           }
+                           onChange={(value) =>
+                              handleAttributeChange(
+                                 key as keyof Character,
+                                 Number(value.target.value)
+                              )
+                           }
+                           className="w-10 text-contrast-10 text-center bg-contrast-3 opacity-100 rounded"
+                        />
+                     </div>
                   </div>
                ))}
             </div>

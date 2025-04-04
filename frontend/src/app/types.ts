@@ -54,6 +54,23 @@ export interface CharacterData {
    actions: Action[];
 }
 
+export class Attribute {
+   amount: number;
+
+   constructor(amount: number) {
+      this.amount = amount;
+   }
+
+   getModifier(): number {
+      return Math.floor((this.amount - 10) / 2);
+   }
+
+   getModifierString(): string {
+      const modifier = this.getModifier();
+      return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+   }
+}
+
 export type Character = {
    id: number;
    name: string;
@@ -71,12 +88,12 @@ export type Character = {
    currentHitDice: string; // Added currentHitDice
    maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };
-   str: number; // Strength
-   dex: number; // Dexterity
-   con: number; // Constitution
-   int: number; // Intelligence
-   wis: number; // Wisdom
-   cha: number; // Charisma
+   str: Attribute; // Strength
+   dex: Attribute; // Dexterity
+   con: Attribute; // Constitution
+   int: Attribute; // Intelligence
+   wis: Attribute; // Wisdom
+   cha: Attribute; // Charisma
 };
 
 export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";

@@ -1,4 +1,4 @@
-import { Action, Character } from "app/types";
+import { Action, Attribute, Character } from "app/types";
 import { openDB } from "idb";
 
 const DB_NAME = "ActionBasedDnD";
@@ -107,6 +107,16 @@ export async function getCharacterFromIndexedDB(
    console.log("## database ID", characterID);
    const character = await store.get(characterID); // Retrieve character by ID
    console.log("found by the database", character);
+
+   if (character) {
+      ["str", "dex", "con", "int", "wis", "cha"].forEach((key) => {
+         if (character[key]) {
+            character[key] = new Attribute(character[key].amount);
+         } else {
+            character[key] = new Attribute(10);
+         }
+      });
+   }
    return character || null; // Return the character or null if not found
 }
 

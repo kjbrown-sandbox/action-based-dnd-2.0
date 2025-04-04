@@ -80,7 +80,7 @@ export default function InputSmartNumber({
                   className={cn("", className)} // Allow overriding styles with className
                />
             </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={-15}>
+            <TooltipContent side="right" sideOffset={-5}>
                {/* <div className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 flex flex-col items-center gap-1 pr-2 opacity-0 group-hover:opacity-100 transition-opacity"> */}
                <div className="flex flex-col items-center">
                   <button
