@@ -5,10 +5,14 @@ import { Formik, Form, Field } from "formik";
 import "./globals.css";
 import { Action, Attribute, Character } from "./types";
 import { Button } from "../components/ui/button";
-import { saveActionToIndexedDB } from "../lib/indexedDB";
+import {
+   saveActionToIndexedDB,
+   saveCharacterToIndexedDB,
+} from "../lib/indexedDB";
 import { Divider } from "@/components/ui/Divider";
 import { AppContext } from "./context";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
+import { copyCharacter } from "lib/utils";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -31,18 +35,16 @@ export default function ExtraInfoPanels() {
       }
    };
 
-   const handleAttributeChange = (key: keyof Character, value: number) => {
+   const handleAttributeChange = async (
+      key: keyof Character,
+      value: number
+   ) => {
       if (!character) return;
-      const updatedCharacter = { ...character, [key]: value };
+      const newAttribute = new Attribute(value);
+      const updatedCharacter = copyCharacter(character);
+      updatedCharacter[key] = newAttribute;
       setCharacter(updatedCharacter);
-   };
-
-   const calculateModifier = (attribute: number): string => {
-      const modifier = Math.floor((attribute - 10) / 2);
-      if (modifier >= 0) {
-         return `+${modifier}`;
-      }
-      return `${modifier}`;
+      saveCharacterToIndexedDB(updatedCharacter);
    };
 
    type FormValues = Omit<Action, "triggers" | "id" | "characterID"> & {

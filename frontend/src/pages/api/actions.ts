@@ -8,8 +8,6 @@ export default async function handler(
    req: NextApiRequest,
    res: NextApiResponse
 ) {
-   console.log("Request received:", req.method, req.body); // Debugging log
-
    if (req.method === "POST") {
       const { action } = req.body;
 

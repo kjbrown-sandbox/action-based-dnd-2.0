@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useEffect } from "react";
-import { Action, Character, LAST_USED_CHARACTER_ID } from "./types";
+import { Action, Attribute, Character, LAST_USED_CHARACTER_ID } from "./types";
 import {
    saveActionToIndexedDB,
    getActionsFromIndexedDB,
@@ -36,15 +36,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                return;
             }
 
-            console.log("localStorageCharacterID", localStorageCharacterID);
             const localCharacter = await getCharacterFromIndexedDB(
                idAsNumber || -1
             );
-            console.log("localCharacter", localCharacter);
 
             if (localCharacter) {
                setCharacter(localCharacter);
-               console.log("Found character in IndexedDB:", localCharacter);
             } else {
                const defaultCharacter: Character = {
                   id: -1,
@@ -65,6 +62,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                      successes: 0,
                      failures: 0,
                   },
+                  str: new Attribute(10),
+                  dex: new Attribute(10),
+                  con: new Attribute(10),
+                  int: new Attribute(10),
+                  wis: new Attribute(10),
+                  cha: new Attribute(10),
                };
                setCharacter(defaultCharacter);
                await saveCharacterToIndexedDB(defaultCharacter);

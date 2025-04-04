@@ -62,3 +62,7 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 -  [ ] At least one place to put notes/descriptions/thoughts
 -  [ ] Money
 -  [ ] Potentially rename "trigger" to something else
+
+## Cursed learnings:
+
+-  2025.04.04 - console.log does not print the value of the variable at the exact moment it's called. Something about the event loop or something waits until it gets a chance to print--but if the variable is an object whose fields are modified before the printing occurs, console.log shows the NEW value of the object, not what it was at the time it was called.

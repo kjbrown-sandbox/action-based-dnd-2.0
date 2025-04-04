@@ -1,5 +1,6 @@
 import { Action, Attribute, Character } from "app/types";
 import { openDB } from "idb";
+import { copyCharacter } from "./utils";
 
 const DB_NAME = "ActionBasedDnD";
 const ACTION_STORE = "actions";
@@ -71,9 +72,9 @@ export async function getActionsFromIndexedDB(
 }
 
 export async function saveCharacterToIndexedDB(
-   character: Omit<Character, "id"> & { id?: number }
+   c: Omit<Character, "id"> & { id?: number }
 ): Promise<Character> {
-   console.log("saving this character", character);
+   const character = copyCharacter(c);
 
    const db = await initDB();
    const tx = db.transaction(CHARACTER_STORE, "readwrite");
@@ -87,6 +88,11 @@ export async function saveCharacterToIndexedDB(
    const existingCharacter = await store.get(character?.id || "");
    let characterId = character.id;
    if (existingCharacter) {
+      ["str", "dex", "con", "int", "wis", "cha"].forEach((key) => {
+         if (character[key] instanceof Attribute) {
+            character[key] = character[key].amount;
+         }
+      });
       await store.put(character);
    } else {
       const newId = await store.add(character);
@@ -104,19 +110,18 @@ export async function getCharacterFromIndexedDB(
    const tx = db.transaction(CHARACTER_STORE, "readonly");
    const store = tx.objectStore(CHARACTER_STORE);
 
-   console.log("## database ID", characterID);
    const character = await store.get(characterID); // Retrieve character by ID
-   console.log("found by the database", character);
 
    if (character) {
       ["str", "dex", "con", "int", "wis", "cha"].forEach((key) => {
          if (character[key]) {
-            character[key] = new Attribute(character[key].amount);
+            character[key] = new Attribute(character[key]);
          } else {
             character[key] = new Attribute(10);
          }
       });
    }
+
    return character || null; // Return the character or null if not found
 }
 

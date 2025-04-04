@@ -20,10 +20,7 @@ export default function Navbar() {
    }
 
    const { character, setCharacter } = context;
-   console.log("### Character:", character);
    const [allCharacters, setAllCharacters] = useState<Character[]>([]);
-   console.log("Navbar character", character);
-   console.log("Navbar allCharacters", allCharacters);
 
    useEffect(() => {
       const fetchCharacters = async () => {
