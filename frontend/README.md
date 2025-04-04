@@ -41,7 +41,7 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 
 ## To do:
 
--  [ ] Can add multiple characters
+-  [x] Can add multiple characters
 -  [ ] Attributes
 -  [ ] Skills
    -  [ ] Half proficient, full proficient, double proficient
