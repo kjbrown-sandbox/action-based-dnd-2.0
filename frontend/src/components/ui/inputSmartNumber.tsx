@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEventHandler, useState } from "react";
+import React, { ChangeEventHandler } from "react";
 import { Input } from "@/components/ui/input";
 import { evaluate } from "mathjs";
 import { Minus, Plus } from "lucide-react";
@@ -11,17 +11,20 @@ import {
    TooltipTrigger,
 } from "./tooltip";
 import { Divider } from "./Divider";
+import { cn } from "@/components/lib/utils";
 
 interface InputSmartNumberProps
    extends React.InputHTMLAttributes<HTMLInputElement> {
    onChange?: ChangeEventHandler<HTMLInputElement>;
    onBlur?: ChangeEventHandler<HTMLInputElement>;
+   className?: string; // Allow overriding the input's class
 }
 
 export default function InputSmartNumber({
    onChange,
    onBlur,
    value,
+   className,
    ...props
 }: InputSmartNumberProps) {
    const incrementValue = (amount: number) => {
@@ -39,24 +42,20 @@ export default function InputSmartNumber({
 
    const evaluateExpression = (expression: string): number => {
       try {
-         // Use mathjs to evaluate the expression safely
-         // Only allow numbers and operators
          const sanitizedExpression = expression.replace(/[^0-9+\-*/().]/g, "");
          return evaluate(sanitizedExpression);
       } catch {
-         return NaN; // Return NaN if the expression is invalid
+         return NaN;
       }
    };
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log("smart", e.target.value);
       onChange?.(e);
    };
 
    const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       const calculatedValue = evaluateExpression(`${e.target.value}`);
       const inputValue = e.target.value;
-      console.log("smart blur", inputValue);
       if (onBlur) {
          const customEvent: React.FocusEvent<HTMLInputElement> = {
             ...e,
@@ -69,15 +68,6 @@ export default function InputSmartNumber({
       }
    };
 
-   // <TooltipProvider>
-   //    <Tooltip>
-   //       <TooltipTrigger>Hover</TooltipTrigger>
-   //       <TooltipContent>
-   //          <p>Add to library</p>
-   //       </TooltipContent>
-   //    </Tooltip>
-   // </TooltipProvider>;
-
    return (
       <TooltipProvider>
          <Tooltip>
@@ -87,8 +77,7 @@ export default function InputSmartNumber({
                   value={value}
                   onChange={handleInputChange}
                   onBlur={handleInputBlur}
-                  className="pr-10" // Add padding to avoid overlap with icons
-                  // placeholder="Enter expression"
+                  className={cn("", className)} // Allow overriding styles with className
                />
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={-15}>
@@ -115,37 +104,5 @@ export default function InputSmartNumber({
             </TooltipContent>
          </Tooltip>
       </TooltipProvider>
-   );
-
-   return (
-      <div className="relative group">
-         <Input
-            {...props}
-            value={value}
-            onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            className="pr-10" // Add padding to avoid overlap with icons
-         />
-
-         {/* Increment and Decrement Icons */}
-         <div className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 flex flex-col items-center gap-1 pr-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-               type="button"
-               onClick={() => incrementValue(1)}
-               className="p-1 rounded hover:bg-contrast-2 hover:bg-opacity-50"
-               aria-label="Increment"
-            >
-               <Plus size={20} />
-            </button>
-            <button
-               type="button"
-               onClick={() => incrementValue(-1)}
-               className="p-1 rounded hover:bg-contrast-2 hover:bg-opacity-50"
-               aria-label="Decrement"
-            >
-               <Minus size={20} />
-            </button>
-         </div>
-      </div>
    );
 }

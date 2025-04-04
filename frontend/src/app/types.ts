@@ -71,6 +71,12 @@ export type Character = {
    currentHitDice: string; // Added currentHitDice
    maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };
+   str: number; // Strength
+   dex: number; // Dexterity
+   con: number; // Constitution
+   int: number; // Intelligence
+   wis: number; // Wisdom
+   cha: number; // Charisma
 };
 
 export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";
