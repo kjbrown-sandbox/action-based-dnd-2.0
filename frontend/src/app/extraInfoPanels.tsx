@@ -3,7 +3,13 @@
 import { useState, useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
-import { Action, Attribute, Character } from "./types";
+import {
+   Action,
+   Attribute,
+   ATTRIBUTE_LIST,
+   Character,
+   SKILL_LIST,
+} from "./types";
 import { Button } from "../components/ui/button";
 import {
    saveActionToIndexedDB,
@@ -13,6 +19,7 @@ import { Divider } from "@/components/ui/Divider";
 import { AppContext } from "./context";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
 import { copyCharacter } from "lib/utils";
+import SkillRow from "./skillRow";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -36,13 +43,13 @@ export default function ExtraInfoPanels() {
    };
 
    const handleAttributeChange = async (
-      key: keyof Character,
+      key: keyof Character["attributes"],
       value: number
    ) => {
       if (!character) return;
       const newAttribute = new Attribute(value);
       const updatedCharacter = copyCharacter(character);
-      updatedCharacter[key] = newAttribute;
+      updatedCharacter.attributes[key] = newAttribute;
       setCharacter(updatedCharacter);
       saveCharacterToIndexedDB(updatedCharacter);
    };
@@ -73,7 +80,7 @@ export default function ExtraInfoPanels() {
                }`}
                onClick={() => setActiveTab("attributes")}
             >
-               Attributes
+               Attributes & Skills
             </button>
          </div>
 
@@ -175,39 +182,48 @@ export default function ExtraInfoPanels() {
                </Formik>
             </div>
          ) : (
-            <div className="grid grid-cols-6 gap-4">
-               {[
-                  { key: "str", title: "Strength" },
-                  { key: "dex", title: "Dexterity" },
-                  { key: "con", title: "Constitution" },
-                  { key: "int", title: "Intelligence" },
-                  { key: "wis", title: "Wisdom" },
-                  { key: "cha", title: "Charisma" },
-               ].map(({ key, title }) => (
-                  <div key={key} className="flex flex-col items-center">
-                     <div className="text-sm font-bold mb-1">{title}</div>
-                     <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
-                        {(
-                           character?.[key as keyof Character] as Attribute
-                        )?.getModifierString() ?? 10}
+            <div className="flex flex-col gap-8">
+               {/* Attributes Section */}
+               <div className="grid grid-cols-6 gap-4">
+                  {ATTRIBUTE_LIST.map((attribute) => (
+                     <div
+                        key={attribute}
+                        className="flex flex-col items-center"
+                     >
+                        <div className="text-sm font-bold mb-1">
+                           {attribute.toUpperCase()}
+                        </div>
+                        <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
+                           {character?.attributes[
+                              attribute
+                           ]?.getModifierString() ?? 10}
+                        </div>
+                        <div className="bg-contrast-3 relative top-[-15px]">
+                           <InputSmartNumber
+                              value={
+                                 character?.attributes[attribute]?.amount ?? 10
+                              }
+                              onChange={(value) =>
+                                 handleAttributeChange(
+                                    attribute,
+                                    Number(value.target.value)
+                                 )
+                              }
+                              className="w-9 text-contrast-10 text-center bg-contrast-3 opacity-100 rounded px-0"
+                           />
+                        </div>
                      </div>
-                     <div className="bg-contrast-3 relative top-[-15px]">
-                        <InputSmartNumber
-                           value={
-                              (character?.[key as keyof Character] as Attribute)
-                                 .amount ?? 10
-                           }
-                           onChange={(value) =>
-                              handleAttributeChange(
-                                 key as keyof Character,
-                                 Number(value.target.value)
-                              )
-                           }
-                           className="w-10 text-contrast-10 text-center bg-contrast-3 opacity-100 rounded"
-                        />
-                     </div>
-                  </div>
-               ))}
+                  ))}
+               </div>
+
+               <Divider />
+
+               {/* Skills Section */}
+               <div className="grid grid-cols-3 gap-4">
+                  {SKILL_LIST.map((skill) => (
+                     <SkillRow key={skill} skillKey={skill} />
+                  ))}
+               </div>
             </div>
          )}
       </div>

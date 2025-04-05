@@ -9,7 +9,7 @@ import {
 } from "../lib/indexedDB";
 import { AppContext } from "./context";
 import "./globals.css";
-import { Character, LAST_USED_CHARACTER_ID } from "./types";
+import { Attribute, Character, LAST_USED_CHARACTER_ID } from "./types";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
 import { Autocomplete } from "@/components/ui/Autocomplete";
 
@@ -151,6 +151,25 @@ export default function Navbar() {
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
+                     </div>
+                     <div>
+                        <label className="block font-bold">Proficiency:</label>
+                        <InputSmartNumber
+                           value={character.proficiency}
+                           onChange={(e) =>
+                              handleCharacterChange(
+                                 "proficiency",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           onBlur={(e) =>
+                              handleCharacterChange(
+                                 "proficiency",
+                                 parseInt(e.target.value)
+                              )
+                           }
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
                      </div>
                   </div>
 
@@ -330,6 +349,37 @@ export default function Navbar() {
                         />
                      </div>
                   </div>
+
+                  {/* New Section: Attributes */}
+                  {/* <div className="grid grid-cols-6 gap-4">
+                     {Object.entries(character.attributes).map(
+                        ([key, attr]) => (
+                           <div
+                              key={key}
+                              className="flex flex-col items-center"
+                           >
+                              <div className="text-sm font-bold mb-1">
+                                 {key.toUpperCase()}
+                              </div>
+                              <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
+                                 {attr.getModifierString()}
+                              </div>
+                              <InputSmartNumber
+                                 value={attr.amount}
+                                 onChange={(e) =>
+                                    handleCharacterChange("attributes", {
+                                       ...character.attributes,
+                                       [key]: new Attribute(
+                                          Number(e.target.value)
+                                       ),
+                                    })
+                                 }
+                                 className="w-10 text-contrast-10 text-center bg-contrast-3 opacity-100 rounded"
+                              />
+                           </div>
+                        )
+                     )}
+                  </div> */}
                </>
             ) : (
                <p>Loading character...</p>

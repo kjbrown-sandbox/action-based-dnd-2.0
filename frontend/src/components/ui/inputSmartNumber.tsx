@@ -9,7 +9,7 @@ import {
    TooltipContent,
    TooltipProvider,
    TooltipTrigger,
-} from "./tooltip";
+} from "./inputSmartNumberTooltip";
 import { Divider } from "./Divider";
 import { cn } from "@/components/lib/utils";
 

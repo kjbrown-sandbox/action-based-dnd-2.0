@@ -1,7 +1,14 @@
 "use client";
 
 import React, { createContext, useState, useEffect } from "react";
-import { Action, Attribute, Character, LAST_USED_CHARACTER_ID } from "./types";
+import {
+   Action,
+   Attribute,
+   ATTRIBUTE_LIST,
+   Character,
+   LAST_USED_CHARACTER_ID,
+   SKILL_LIST,
+} from "./types";
 import {
    saveActionToIndexedDB,
    getActionsFromIndexedDB,
@@ -43,6 +50,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             if (localCharacter) {
                setCharacter(localCharacter);
             } else {
+               const defaultAttributes = ATTRIBUTE_LIST.map((attr) => ({
+                  [attr]: new Attribute(10), // Default value for each attribute
+               })).reduce((acc, curr) => ({ ...acc, ...curr }), {});
                const defaultCharacter: Character = {
                   id: -1,
                   name: "New Character",
@@ -62,12 +72,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
                      successes: 0,
                      failures: 0,
                   },
-                  str: new Attribute(10),
-                  dex: new Attribute(10),
-                  con: new Attribute(10),
-                  int: new Attribute(10),
-                  wis: new Attribute(10),
-                  cha: new Attribute(10),
+                  proficiency: 2,
+                  attributes: ATTRIBUTE_LIST.map((attr) => ({
+                     [attr]: new Attribute(10), // Default value for each attribute
+                  })).reduce(
+                     (acc, curr) => ({ ...acc, ...curr }),
+                     {}
+                  ) as Character["attributes"],
+                  skillProficiencies: SKILL_LIST.reduce(
+                     (acc, skill) => ({
+                        ...acc,
+                        [skill]: "none", // Default proficiency for each skill
+                     }),
+                     {}
+                  ) as Character["skillProficiencies"],
                };
                setCharacter(defaultCharacter);
                await saveCharacterToIndexedDB(defaultCharacter);

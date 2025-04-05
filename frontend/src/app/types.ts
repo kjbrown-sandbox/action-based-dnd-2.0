@@ -54,19 +54,49 @@ export interface CharacterData {
    actions: Action[];
 }
 
+export const ATTRIBUTE_LIST = [
+   "str",
+   "dex",
+   "con",
+   "int",
+   "wis",
+   "cha",
+] as const;
+export type AttributeKey = (typeof ATTRIBUTE_LIST)[number];
+
+export const SKILL_LIST = [
+   "acrobatics",
+   "animal handling",
+   "arcana",
+   "athletics",
+   "deception",
+   "history",
+   "insight",
+   "intimidation",
+   "investigation",
+   "medicine",
+   "nature",
+   "perception",
+   "performance",
+   "persuasion",
+   "religion",
+   "sleight of hand",
+   "stealth",
+   "survival",
+] as const;
+export type SkillKey = (typeof SKILL_LIST)[number];
+
 export class Attribute {
    amount: number;
+   modifier: number;
 
    constructor(amount: number) {
       this.amount = amount;
-   }
-
-   getModifier(): number {
-      return Math.floor((this.amount - 10) / 2);
+      this.modifier = Math.floor((amount - 10) / 2);
    }
 
    getModifierString(): string {
-      const modifier = this.getModifier();
+      const modifier = this.modifier;
       return modifier >= 0 ? `+${modifier}` : `${modifier}`;
    }
 }
@@ -88,12 +118,19 @@ export type Character = {
    currentHitDice: string; // Added currentHitDice
    maxHitDice: string; // Added maxHitDice
    deathSaves: { successes: number; failures: number };
-   str: Attribute; // Strength
-   dex: Attribute; // Dexterity
-   con: Attribute; // Constitution
-   int: Attribute; // Intelligence
-   wis: Attribute; // Wisdom
-   cha: Attribute; // Charisma
+   attributes: {
+      // str: Attribute; // Strength
+      // dex: Attribute; // Dexterity
+      // con: Attribute; // Constitution
+      // int: Attribute; // Intelligence
+      // wis: Attribute; // Wisdom
+      // cha: Attribute; // Charisma
+      [key in AttributeKey]: Attribute;
+   };
+   proficiency: number; // Proficiency bonus
+   skillProficiencies: {
+      [key in SkillKey]: "none" | "half" | "proficient" | "expert";
+   };
 };
 
 export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";
