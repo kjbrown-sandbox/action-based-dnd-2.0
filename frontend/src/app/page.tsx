@@ -13,9 +13,9 @@ import {
 } from "../lib/indexedDB";
 import { Divider } from "@/components/ui/Divider";
 import { AppContext } from "./context";
-import Navbar from "./navbar";
 import ActionsDisplay from "./actionsDisplay";
 import ExtraInfoPanels from "./extraInfoPanels";
+import Navbar from "./navbar";
 
 export default function Home() {
    const context = useContext(AppContext);

@@ -24,10 +24,7 @@ export type DamageType =
    | "force"
    | "other";
 
-export type CommonTrigger =
-   | TimeAction
-   | "enemy leaves range"
-   | "enemy casts spell";
+export type CommonTrigger = TimeAction | "enemy leaves range" | "enemy casts spell";
 
 export interface Range {
    normal: number;
@@ -54,15 +51,23 @@ export interface CharacterData {
    actions: Action[];
 }
 
-export const ATTRIBUTE_LIST = [
-   "str",
-   "dex",
-   "con",
-   "int",
-   "wis",
-   "cha",
-] as const;
+export const ATTRIBUTE_LIST = ["str", "dex", "con", "int", "wis", "cha"] as const;
 export type AttributeKey = (typeof ATTRIBUTE_LIST)[number];
+
+export class Attribute {
+   amount: number;
+   modifier: number;
+
+   constructor(amount: number) {
+      this.amount = amount;
+      this.modifier = Math.floor((amount - 10) / 2);
+   }
+
+   getModifierString(): string {
+      const modifier = this.modifier;
+      return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+   }
+}
 
 export const SKILL_LIST = [
    "acrobatics",
@@ -86,28 +91,13 @@ export const SKILL_LIST = [
 ] as const;
 export type SkillKey = (typeof SKILL_LIST)[number];
 
-export class Attribute {
-   amount: number;
-   modifier: number;
-
-   constructor(amount: number) {
-      this.amount = amount;
-      this.modifier = Math.floor((amount - 10) / 2);
-   }
-
-   getModifierString(): string {
-      const modifier = this.modifier;
-      return modifier >= 0 ? `+${modifier}` : `${modifier}`;
-   }
-}
-
 export const PROFICIENCY_LEVELS = [
    "No proficiency",
    "Half proficiency",
    "Proficiency",
    "Expertise",
 ] as const;
-export type ProficiencyLevel = (typeof PROFICIENCY_LEVELS)[number];
+export type ProficiencyLabel = (typeof PROFICIENCY_LEVELS)[number];
 
 export type Character = {
    id: number;
@@ -137,7 +127,7 @@ export type Character = {
    };
    proficiency: number; // Proficiency bonus
    skillProficiencies: {
-      [key in SkillKey]: ProficiencyLevel;
+      [key in SkillKey]: ProficiencyLabel;
    };
 };
 

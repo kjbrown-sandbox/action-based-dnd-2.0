@@ -4,6 +4,7 @@ import {
    ATTRIBUTE_LIST,
    Character,
    SKILL_LIST,
+   PROFICIENCY_LEVELS,
 } from "app/types";
 import { openDB } from "idb";
 import { copyCharacter } from "./utils";
@@ -65,9 +66,7 @@ export async function saveActionToIndexedDB(action: Action): Promise<Action> {
    return { ...action, id: actionId };
 }
 
-export async function getActionsFromIndexedDB(
-   characterID: number
-): Promise<Action[]> {
+export async function getActionsFromIndexedDB(characterID: number): Promise<Action[]> {
    const db = await initDB();
    const tx = db.transaction(ACTION_STORE, "readonly");
    const store = tx.objectStore(ACTION_STORE);
@@ -77,18 +76,12 @@ export async function getActionsFromIndexedDB(
    return actions;
 }
 
-export async function saveCharacterToIndexedDB(
-   c: Omit<Character, "id"> & { id?: number }
-): Promise<Character> {
+export async function saveCharacterToIndexedDB(c: Character): Promise<Character> {
    const character = copyCharacter(c);
 
    const db = await initDB();
    const tx = db.transaction(CHARACTER_STORE, "readwrite");
    const store = tx.objectStore(CHARACTER_STORE);
-
-   if ((character.id || 0) <= 0) {
-      delete character.id; // Remove the ID to allow auto-increment
-   }
 
    // Save to IndexedDB
    const existingCharacter = await store.get(character?.id || "");
@@ -104,49 +97,15 @@ export async function saveCharacterToIndexedDB(
    return { ...character, id: characterId! };
 }
 
-function sterilizeDatabaseCharacter(databaseCharacter: any): Character {
-   //  const defaultCharacter: Character = {
-   //                id: -1,
-   //                name: "New Character",
-   //                level: "1",
-   //                class: "Fighter",
-   //                race: "Human",
-   //                background: "Soldier",
-   //                armorClass: "15",
-   //                initiativeBonus: "2",
-   //                speed: "30",
-   //                currentHP: "10",
-   //                maxHP: "10",
-   //                tempHP: "0",
-   //                currentHitDice: "1d10",
-   //                maxHitDice: "1d10",
-   //                deathSaves: {
-   //                   successes: 0,
-   //                   failures: 0,
-   //                },
-   //                proficiency: 2,
-   //                attributes: ATTRIBUTE_LIST.map((attr) => ({
-   //                   [attr]: new Attribute(10), // Default value for each attribute
-   //                })).reduce(
-   //                   (acc, curr) => ({ ...acc, ...curr }),
-   //                   {}
-   //                ) as Character["attributes"],
-   //                skillProficiencies: SKILL_LIST.reduce(
-   //                   (acc, skill) => ({
-   //                      ...acc,
-   //                      [skill]: "none", // Default proficiency for each skill
-   //                   }),
-   //                   {}
-   //                ) as Character["skillProficiencies"],
-
-   const defaultCharacter: Character = {
+function sterilizeDatabaseCharacter(dbCharacter: any): Character {
+   const defaultCharacter: Partial<Character> = {
       id: -1,
       name: "New Character",
       level: "1",
       class: "Fighter",
       race: "Human",
       background: "Soldier",
-      armorClass: "15",
+      armorClass: "10",
       initiativeBonus: "2",
       speed: "30",
       currentHP: "10",
@@ -159,58 +118,48 @@ function sterilizeDatabaseCharacter(databaseCharacter: any): Character {
          failures: 0,
       },
       proficiency: 2,
-      attributes: ATTRIBUTE_LIST.map((attr) => ({
-         [attr]: new Attribute(10),
-      })).reduce(
-         (acc, curr) => ({ ...acc, ...curr }),
-         {}
-      ) as Character["attributes"],
-      skillProficiencies: SKILL_LIST.reduce(
-         (acc, skill) => ({
-            ...acc,
-            [skill]: "No proficiency",
-         }),
-         {}
-      ) as Character["skillProficiencies"],
    };
+
+   // Sterilize attributes
+   dbCharacter.attributes = dbCharacter.attributes || {};
+   ATTRIBUTE_LIST.forEach((attr) => {
+      if (!dbCharacter.attributes[attr]) {
+         dbCharacter.attributes[attr] = new Attribute(10); // Default to 10 if missing
+      } else if (!(dbCharacter.attributes[attr] instanceof Attribute)) {
+         dbCharacter.attributes[attr] = new Attribute(dbCharacter.attributes[attr].amount || 10);
+      }
+   });
+
+   // Sterilize skills
+   dbCharacter.skillProficiencies = dbCharacter.skillProficiencies || {};
+   SKILL_LIST.forEach((skill) => {
+      if (!dbCharacter.skillProficiencies[skill]) {
+         dbCharacter.skillProficiencies[skill] = "No proficiency";
+      }
+      if (!Object.values(PROFICIENCY_LEVELS).includes(dbCharacter.skillProficiencies[skill])) {
+         dbCharacter.skillProficiencies[skill] = "No proficiency";
+      }
+   });
 
    const character: Character = {
       ...defaultCharacter,
-      ...databaseCharacter,
-      attributes: {
-         ...defaultCharacter.attributes,
-         ...databaseCharacter.attributes,
-      },
-      skillProficiencies: {
-         ...defaultCharacter.skillProficiencies,
-         ...databaseCharacter.skillProficiencies,
-      },
+      ...dbCharacter,
    };
    return character;
 }
 
-export async function getCharacterFromIndexedDB(
-   characterID: number
-): Promise<Character | null> {
+export async function getCharacterFromIndexedDB(characterID: number): Promise<Character | null> {
    const db = await initDB();
    const tx = db.transaction(CHARACTER_STORE, "readonly");
    const store = tx.objectStore(CHARACTER_STORE);
 
-   let character = await store.get(characterID); // Retrieve character by ID
+   let character = await store.get(characterID);
 
    if (character) {
-      // Reconstruct the attributes object
-      character.attributes = ATTRIBUTE_LIST.reduce((acc, attr) => {
-         acc[attr] = new Attribute(character[attr]);
-         return acc;
-      }, {} as Character["attributes"]);
-
-      // Ensure proficiency is set
-      character.proficiency = character.proficiency;
       character = sterilizeDatabaseCharacter(character); // Clean up the character object
    }
 
-   return character || null; // Return the character or null if not found
+   return character || null;
 }
 
 export async function getAllCharactersFromIndexedDB(): Promise<Character[]> {
@@ -218,6 +167,6 @@ export async function getAllCharactersFromIndexedDB(): Promise<Character[]> {
    const tx = db.transaction(CHARACTER_STORE, "readonly");
    const store = tx.objectStore(CHARACTER_STORE);
 
-   const allCharacters = await store.getAll(); // Retrieve all characters
-   return allCharacters; // Return all characters
+   const allCharacters = await store.getAll();
+   return allCharacters;
 }

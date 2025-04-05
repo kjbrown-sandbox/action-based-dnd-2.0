@@ -1,4 +1,4 @@
-import { Character, Attribute } from "../app/types";
+import { Character, Attribute, SkillKey } from "../app/types";
 
 export function copyCharacter(character: Character): Character {
    return {
@@ -14,12 +14,10 @@ export function copyCharacter(character: Character): Character {
    };
 }
 
-export function getAttributeForSkill(
-   skill: string
-): keyof Character["attributes"] {
-   const skillToAttributeMap: Record<string, keyof Character["attributes"]> = {
+export function getAttributeForSkill(skill: SkillKey): keyof Character["attributes"] {
+   const skillToAttributeMap: Record<SkillKey, keyof Character["attributes"]> = {
       acrobatics: "dex",
-      animalHandling: "wis",
+      "animal handling": "wis",
       arcana: "int",
       athletics: "str",
       deception: "cha",
@@ -33,15 +31,13 @@ export function getAttributeForSkill(
       performance: "cha",
       persuasion: "cha",
       religion: "int",
-      sleightOfHand: "dex",
+      "sleight of hand": "dex",
       stealth: "dex",
       survival: "wis",
    };
 
    if (!skillToAttributeMap[skill]) {
-      console.log(
-         `Skill "${skill}" not found in the skill-to-attribute mapping.`
-      );
+      console.error(`Skill "${skill}" not found in the skill-to-attribute mapping.`);
       return "str";
    }
 
