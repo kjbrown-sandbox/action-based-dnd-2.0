@@ -62,7 +62,7 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 -  [ ] At least one place to put notes/descriptions/thoughts
 -  [ ] Money
 -  [ ] Potentially rename "trigger" to something else
--  [ ] Skill rows/skills could use some refactoring. There's some gross repeated logic
+-  [x] Skill rows/skills could use some refactoring. There's some gross repeated logic
 -  [ ] Remove all errors/warnings
 
 ## Cursed learnings:
