@@ -5,6 +5,7 @@ import {
    Character,
    SKILL_LIST,
    PROFICIENCY_LEVELS,
+   Item,
 } from "app/types";
 import { openDB } from "idb";
 import { copyCharacter } from "./utils";
@@ -12,9 +13,10 @@ import { copyCharacter } from "./utils";
 const DB_NAME = "ActionBasedDnD";
 const ACTION_STORE = "actions";
 const CHARACTER_STORE = "character";
+const ITEMS_STORE = "items";
 
 export async function initDB() {
-   return openDB(DB_NAME, 6, {
+   return openDB(DB_NAME, 7, {
       upgrade(db, oldVersion, newVersion, transaction) {
          // Action
          if (!db.objectStoreNames.contains(ACTION_STORE)) {
@@ -37,6 +39,21 @@ export async function initDB() {
                keyPath: "id",
                autoIncrement: true,
             });
+         }
+
+         // Items
+         if (!db.objectStoreNames.contains(ITEMS_STORE)) {
+            db.createObjectStore(ITEMS_STORE, {
+               keyPath: "id",
+               autoIncrement: true,
+            });
+         }
+
+         const itemStore = transaction.objectStore(ITEMS_STORE);
+         if (!itemStore.indexNames.contains("characterID")) {
+            itemStore.createIndex("characterID", "characterID", {
+               unique: false,
+            }); // Add index on characterID
          }
       },
    });
@@ -169,4 +186,34 @@ export async function getAllCharactersFromIndexedDB(): Promise<Character[]> {
 
    const allCharacters = await store.getAll();
    return allCharacters;
+}
+
+export async function saveItemToIndexedDB(item: Omit<Item, "id"> & { id?: number }): Promise<Item> {
+   const db = await initDB();
+   const tx = db.transaction(ITEMS_STORE, "readwrite");
+   const store = tx.objectStore(ITEMS_STORE);
+
+   let itemId: number;
+
+   // Check if the item already exists
+   const existingItem = await store.get(item.id || 0);
+   if (existingItem) {
+      await store.put(item);
+      itemId = item.id!;
+   } else {
+      itemId = (await store.add(item)).valueOf() as number;
+   }
+
+   await tx.done;
+
+   return { ...item, id: itemId };
+}
+
+export async function getItemsFromIndexedDB(characterID: number): Promise<Item[]> {
+   const db = await initDB();
+   const tx = db.transaction(ITEMS_STORE, "readonly");
+   const store = tx.objectStore(ITEMS_STORE);
+
+   const allItems = await store.getAll();
+   return allItems.filter((item) => item.characterID === characterID);
 }

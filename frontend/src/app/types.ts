@@ -132,3 +132,76 @@ export type Character = {
 };
 
 export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";
+
+export type ItemType =
+   | "Weapon"
+   | "Armor"
+   | "Potion"
+   | "Scroll"
+   | "Tool"
+   | "Adventuring Gear"
+   | "Other";
+
+export type ItemSubtype =
+   | "Melee Weapon"
+   | "Ranged Weapon"
+   | "Light Armor"
+   | "Medium Armor"
+   | "Heavy Armor"
+   | "Consumable"
+   | "Miscellaneous";
+
+export interface Item {
+   id: number;
+   characterID: number; // The ID of the character this item belongs to
+   name?: string;
+   type?: ItemType;
+   subtype?: ItemSubtype;
+   description?: string;
+   weight?: number;
+   value?: number;
+   rarity?: "Common" | "Uncommon" | "Rare" | "Very Rare" | "Legendary" | "Artifact";
+   quantity?: number;
+   tags?: string[];
+   equippable?: boolean;
+   equipped?: boolean;
+   attunement?: boolean;
+   magic?: boolean;
+   timeToUse?: TimeAction;
+
+   // Weapon-specific attributes
+   damage?: string;
+   damageType?: "Slashing" | "Piercing" | "Bludgeoning" | "Other";
+   range?: string;
+   properties?: string[];
+   attackBonus?: number;
+   criticalRange?: string;
+   ammunition?: string;
+
+   // Armor-specific attributes
+   armorClass?: string;
+   armorType?: "Light" | "Medium" | "Heavy" | "Shield";
+   stealthDisadvantage?: boolean;
+   strengthRequirement?: number;
+
+   // Consumable-specific attributes
+   uses?: number;
+   effects?: string;
+   duration?: string;
+
+   // Magical attributes
+   magicBonus?: string;
+   charges?: number;
+   recharge?: string;
+   spellcasting?: string;
+   cursed?: boolean;
+
+   // Tool/Adventuring Gear attributes
+   toolType?: string;
+   skillBonus?: string;
+   specialUse?: string;
+
+   // Homebrew/Custom attributes
+   customFields?: Record<string, string>;
+   notes?: string;
+}
