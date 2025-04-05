@@ -43,8 +43,8 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 
 -  [x] Can add multiple characters
 -  [x] Attributes
--  [ ] Skills
-   -  [ ] Half proficient, full proficient, double proficient
+-  [x] Skills
+   -  [x] Half proficient, full proficient, double proficient
 -  [ ] Attacks/spells need to be connected to ability scores
 -  [ ] Inventory - add items
    -  [ ] Need to show up somewhere in actions list
@@ -62,6 +62,8 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 -  [ ] At least one place to put notes/descriptions/thoughts
 -  [ ] Money
 -  [ ] Potentially rename "trigger" to something else
+-  [ ] Skill rows/skills could use some refactoring. There's some gross repeated logic
+-  [ ] Remove all errors/warnings
 
 ## Cursed learnings:
 
