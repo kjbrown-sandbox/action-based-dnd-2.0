@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 import { AppContext } from "./context";
-import { SKILL_LIST, SkillKey } from "./types";
+import { ProficiencyLevel, SKILL_LIST, SkillKey } from "./types";
 import { getAttributeForSkill } from "../lib/utils";
 import { CircleDashed, Circle, CircleMinus, CircleEqual } from "lucide-react";
 import {
@@ -25,6 +25,23 @@ export default function SkillRow({ skillKey }: { skillKey: SkillKey }) {
    }
 
    const { character, setCharacter } = context;
+
+   function getProficiencyModifierNumber(
+      proficiency: ProficiencyLevel | undefined
+   ) {
+      switch (proficiency) {
+         case "No proficiency":
+            return 0;
+         case "Half proficiency":
+            return 0.5;
+         case "Proficiency":
+            return 1;
+         case "Expertise":
+            return 2;
+         default:
+            return 0;
+      }
+   }
 
    const handleProficiencyChange = () => {
       if (!character) return;
@@ -78,12 +95,59 @@ export default function SkillRow({ skillKey }: { skillKey: SkillKey }) {
    const modifier = calculateModifier();
    const modifierString = modifier >= 0 ? `+${modifier}` : `${modifier}`;
 
+   const relatedAttribute = getAttributeForSkill(skillKey);
+   const attributeModifier = character?.attributes[relatedAttribute]?.modifier;
+
    return (
       <div className="flex items-center gap-3">
          <div className="flex-1 text-sm font-bold">
             {skillKey.toUpperCase()}
          </div>
-         <div className="text-white ml-auto">{modifierString}</div>
+         <Tooltip delayDuration={1000}>
+            <TooltipTrigger asChild>
+               <div className="text-white ml-auto cursor-pointer">
+                  {modifierString}
+               </div>
+            </TooltipTrigger>
+            <TooltipContent>
+               <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between gap-2">
+                     <div className="flex items-center gap-2">
+                        <Circle size={6} />
+                        <span>{`${relatedAttribute.toUpperCase()}`}</span>
+                     </div>
+                     <span>{`→ (${
+                        character?.attributes[
+                           getAttributeForSkill(skillKey)
+                        ]?.getModifierString() || 0
+                     })`}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                     <div className="flex items-center gap-2">
+                        <Circle size={6} />
+                        <span>PROFICIENCY</span>
+                     </div>
+                     <span>{`→ (+${character?.proficiency || 0})`}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                     <div className="flex items-center gap-2">
+                        <Circle size={6} />
+                        <span>PROF. MULTIPLIER</span>
+                     </div>
+                     <span>{`→ (×${getProficiencyModifierNumber(
+                        character?.skillProficiencies[skillKey]
+                     )})`}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 font-bold">
+                     <div className="flex items-center gap-2">
+                        <Circle size={6} />
+                        <span>TOTAL</span>
+                     </div>
+                     <span>{`${modifier >= 0 ? "+" : ""}${modifier}`}</span>
+                  </div>
+               </div>
+            </TooltipContent>
+         </Tooltip>
          <Tooltip delayDuration={1000}>
             <TooltipTrigger asChild>
                <button

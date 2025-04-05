@@ -101,6 +101,14 @@ export class Attribute {
    }
 }
 
+export const PROFICIENCY_LEVELS = [
+   "No proficiency",
+   "Half proficiency",
+   "Proficiency",
+   "Expertise",
+] as const;
+export type ProficiencyLevel = (typeof PROFICIENCY_LEVELS)[number];
+
 export type Character = {
    id: number;
    name: string;
@@ -129,7 +137,7 @@ export type Character = {
    };
    proficiency: number; // Proficiency bonus
    skillProficiencies: {
-      [key in SkillKey]: "none" | "half" | "proficient" | "expert";
+      [key in SkillKey]: ProficiencyLevel;
    };
 };
 

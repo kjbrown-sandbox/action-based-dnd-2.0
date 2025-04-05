@@ -168,7 +168,7 @@ function sterilizeDatabaseCharacter(databaseCharacter: any): Character {
       skillProficiencies: SKILL_LIST.reduce(
          (acc, skill) => ({
             ...acc,
-            [skill]: "none",
+            [skill]: "No proficiency",
          }),
          {}
       ) as Character["skillProficiencies"],

@@ -16,7 +16,7 @@ export function copyCharacter(character: Character): Character {
 
 export function getAttributeForSkill(
    skill: string
-): keyof Character["attributes"] | null {
+): keyof Character["attributes"] {
    const skillToAttributeMap: Record<string, keyof Character["attributes"]> = {
       acrobatics: "dex",
       animalHandling: "wis",
@@ -38,5 +38,12 @@ export function getAttributeForSkill(
       survival: "wis",
    };
 
-   return skillToAttributeMap[skill] || null;
+   if (!skillToAttributeMap[skill]) {
+      console.log(
+         `Skill "${skill}" not found in the skill-to-attribute mapping.`
+      );
+      return "str";
+   }
+
+   return skillToAttributeMap[skill];
 }
