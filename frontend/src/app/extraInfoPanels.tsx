@@ -182,7 +182,7 @@ export default function ExtraInfoPanels() {
                </Formik>
             </div>
          ) : (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 h-full">
                {/* Attributes Section */}
                <div className="grid grid-cols-6 gap-4">
                   {ATTRIBUTE_LIST.map((attribute) => (
@@ -219,7 +219,7 @@ export default function ExtraInfoPanels() {
                <Divider />
 
                {/* Skills Section */}
-               <div className="grid grid-cols-3 gap-4">
+               <div className="grid grid-cols-2 gap-x-10 gap-y-4">
                   {SKILL_LIST.map((skill) => (
                      <SkillRow key={skill} skillKey={skill} />
                   ))}
