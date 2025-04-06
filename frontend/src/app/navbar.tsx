@@ -41,9 +41,7 @@ export default function Navbar() {
 
    const handleCharacterSelect = async (id: string) => {
       const idAsNumber = Number(id);
-      const selectedCharacter = allCharacters.find(
-         (char) => char.id === idAsNumber
-      );
+      const selectedCharacter = allCharacters.find((char) => char.id === idAsNumber);
       if (selectedCharacter) {
          setCharacter(selectedCharacter);
       }
@@ -52,14 +50,12 @@ export default function Navbar() {
    return (
       <>
          {/* Navbar */}
-         <div className="bg-contrast-1 p-4 m-4 flex rounded justify-between items-start gap-8">
+         <div className="bg-contrast-0 p-4 m-4 flex rounded justify-between items-start gap-8">
             {character ? (
                <>
                   {/* Character Selection */}
                   <div className="w-full mb-4">
-                     <label className="block font-bold mb-2">
-                        Select Character:
-                     </label>
+                     <label className="block font-bold mb-2">Select Character:</label>
                      <Autocomplete
                         items={allCharacters.map((char) => ({
                            value: char.id.toString(),
@@ -78,12 +74,8 @@ export default function Navbar() {
                         <input
                            type="text"
                            value={character.name}
-                           onChange={(e) =>
-                              handleCharacterChange("name", e.target.value)
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange("name", e.target.value)
-                           }
+                           onChange={(e) => handleCharacterChange("name", e.target.value)}
+                           onBlur={(e) => handleCharacterChange("name", e.target.value)}
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
@@ -92,12 +84,8 @@ export default function Navbar() {
                            <label className="block font-bold">Level:</label>
                            <InputSmartNumber
                               value={character.level}
-                              onChange={(e) =>
-                                 handleCharacterChange("level", e.target.value)
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("level", e.target.value)
-                              }
+                              onChange={(e) => handleCharacterChange("level", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("level", e.target.value)}
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
@@ -106,12 +94,8 @@ export default function Navbar() {
                            <input
                               type="text"
                               value={character.class}
-                              onChange={(e) =>
-                                 handleCharacterChange("class", e.target.value)
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("class", e.target.value)
-                              }
+                              onChange={(e) => handleCharacterChange("class", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("class", e.target.value)}
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
@@ -120,56 +104,21 @@ export default function Navbar() {
                            <input
                               type="text"
                               value={character.race}
-                              onChange={(e) =>
-                                 handleCharacterChange("race", e.target.value)
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("race", e.target.value)
-                              }
+                              onChange={(e) => handleCharacterChange("race", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("race", e.target.value)}
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
                         <div>
-                           <label className="block font-bold">
-                              Background:
-                           </label>
+                           <label className="block font-bold">Background:</label>
                            <input
                               type="text"
                               value={character.background || ""}
-                              onChange={(e) =>
-                                 handleCharacterChange(
-                                    "background",
-                                    e.target.value
-                                 )
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange(
-                                    "background",
-                                    e.target.value
-                                 )
-                              }
+                              onChange={(e) => handleCharacterChange("background", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("background", e.target.value)}
                               className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
-                     </div>
-                     <div>
-                        <label className="block font-bold">Proficiency:</label>
-                        <InputSmartNumber
-                           value={character.proficiency}
-                           onChange={(e) =>
-                              handleCharacterChange(
-                                 "proficiency",
-                                 parseInt(e.target.value)
-                              )
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange(
-                                 "proficiency",
-                                 parseInt(e.target.value)
-                              )
-                           }
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
-                        />
                      </div>
                   </div>
 
@@ -182,38 +131,24 @@ export default function Navbar() {
                            type="number"
                            value={character.armorClass}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "armorClass",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("armorClass", parseInt(e.target.value))
                            }
                            onBlur={(e) =>
-                              handleCharacterChange(
-                                 "armorClass",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("armorClass", parseInt(e.target.value))
                            }
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
-                        <label className="block font-bold">
-                           Initiative Bonus:
-                        </label>
+                        <label className="block font-bold">Initiative Bonus:</label>
                         <input
                            type="number"
                            value={character.initiativeBonus}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "initiativeBonus",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("initiativeBonus", parseInt(e.target.value))
                            }
                            onBlur={(e) =>
-                              handleCharacterChange(
-                                 "initiativeBonus",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("initiativeBonus", parseInt(e.target.value))
                            }
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
@@ -224,16 +159,21 @@ export default function Navbar() {
                            type="number"
                            value={character.speed}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "speed",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("speed", parseInt(e.target.value))
+                           }
+                           onBlur={(e) => handleCharacterChange("speed", parseInt(e.target.value))}
+                           className="bg-contrast-3 text-white p-1 rounded w-full"
+                        />
+                     </div>
+                     <div>
+                        <label className="block font-bold">Proficiency:</label>
+                        <InputSmartNumber
+                           value={character.proficiency}
+                           onChange={(e) =>
+                              handleCharacterChange("proficiency", parseInt(e.target.value))
                            }
                            onBlur={(e) =>
-                              handleCharacterChange(
-                                 "speed",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("proficiency", parseInt(e.target.value))
                            }
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
@@ -243,24 +183,12 @@ export default function Navbar() {
                   {/* New Section: Hit Dice */}
                   <div className="flex flex-col gap-2">
                      <div>
-                        <label className="block font-bold">
-                           Current Hit Dice:
-                        </label>
+                        <label className="block font-bold">Current Hit Dice:</label>
                         <input
                            type="text"
                            value={character.currentHitDice}
-                           onChange={(e) =>
-                              handleCharacterChange(
-                                 "currentHitDice",
-                                 e.target.value
-                              )
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange(
-                                 "currentHitDice",
-                                 e.target.value
-                              )
-                           }
+                           onChange={(e) => handleCharacterChange("currentHitDice", e.target.value)}
+                           onBlur={(e) => handleCharacterChange("currentHitDice", e.target.value)}
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
@@ -269,18 +197,8 @@ export default function Navbar() {
                         <input
                            type="text"
                            value={character.maxHitDice}
-                           onChange={(e) =>
-                              handleCharacterChange(
-                                 "maxHitDice",
-                                 e.target.value
-                              )
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange(
-                                 "maxHitDice",
-                                 e.target.value
-                              )
-                           }
+                           onChange={(e) => handleCharacterChange("maxHitDice", e.target.value)}
+                           onBlur={(e) => handleCharacterChange("maxHitDice", e.target.value)}
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
@@ -294,16 +212,10 @@ export default function Navbar() {
                            type="number"
                            value={character.currentHP}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "currentHP",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("currentHP", parseInt(e.target.value))
                            }
                            onBlur={(e) =>
-                              handleCharacterChange(
-                                 "currentHP",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("currentHP", parseInt(e.target.value))
                            }
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
@@ -314,17 +226,9 @@ export default function Navbar() {
                            type="number"
                            value={character.maxHP}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "maxHP",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("maxHP", parseInt(e.target.value))
                            }
-                           onBlur={(e) =>
-                              handleCharacterChange(
-                                 "maxHP",
-                                 parseInt(e.target.value)
-                              )
-                           }
+                           onBlur={(e) => handleCharacterChange("maxHP", parseInt(e.target.value))}
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
@@ -334,17 +238,9 @@ export default function Navbar() {
                            type="number"
                            value={character.tempHP || 0}
                            onChange={(e) =>
-                              handleCharacterChange(
-                                 "tempHP",
-                                 parseInt(e.target.value)
-                              )
+                              handleCharacterChange("tempHP", parseInt(e.target.value))
                            }
-                           onBlur={(e) =>
-                              handleCharacterChange(
-                                 "tempHP",
-                                 parseInt(e.target.value)
-                              )
-                           }
+                           onBlur={(e) => handleCharacterChange("tempHP", parseInt(e.target.value))}
                            className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
