@@ -22,9 +22,11 @@ export const TabCollection: React.FC<TabCollectionProps> = ({ labels, onChange, 
             <button
                key={label}
                onClick={() => handleTabClick(index)}
-               className={`p-3 rounded-tr rounded-tl ${
-                  activeIndex === index ? "bg-contrast-1 text-white" : "bg-contrast-0 text-gray-400"
-               } hover:bg-contrast-1 hover:text-white transition-colors duration-200`}
+               className={`p-3 px-4 rounded-tr rounded-tl ${
+                  activeIndex === index
+                     ? "bg-contrast-1 text-contrast-10"
+                     : "bg-contrast-0 text-gray-400"
+               } hover:bg-contrast-1 hover:text-contrast-10 transition-colors duration-200`}
             >
                {label}
             </button>

@@ -12,6 +12,7 @@ import "./globals.css";
 import { Attribute, Character, LAST_USED_CHARACTER_ID } from "./types";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
 import { Autocomplete } from "@/components/ui/Autocomplete";
+import { Input } from "@/components/ui/input";
 
 export default function Navbar() {
    const context = useContext(AppContext);
@@ -71,12 +72,11 @@ export default function Navbar() {
                   <div className="flex flex-col gap-2">
                      <div>
                         <label className="block font-bold">Name:</label>
-                        <input
+                        <Input
                            type="text"
                            value={character.name}
                            onChange={(e) => handleCharacterChange("name", e.target.value)}
                            onBlur={(e) => handleCharacterChange("name", e.target.value)}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div className="grid grid-cols-2 gap-4">
@@ -86,37 +86,33 @@ export default function Navbar() {
                               value={character.level}
                               onChange={(e) => handleCharacterChange("level", e.target.value)}
                               onBlur={(e) => handleCharacterChange("level", e.target.value)}
-                              className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
                         <div>
                            <label className="block font-bold">Class:</label>
-                           <input
+                           <Input
                               type="text"
                               value={character.class}
                               onChange={(e) => handleCharacterChange("class", e.target.value)}
                               onBlur={(e) => handleCharacterChange("class", e.target.value)}
-                              className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
                         <div>
                            <label className="block font-bold">Race:</label>
-                           <input
+                           <Input
                               type="text"
                               value={character.race}
                               onChange={(e) => handleCharacterChange("race", e.target.value)}
                               onBlur={(e) => handleCharacterChange("race", e.target.value)}
-                              className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
                         <div>
                            <label className="block font-bold">Background:</label>
-                           <input
+                           <Input
                               type="text"
                               value={character.background || ""}
                               onChange={(e) => handleCharacterChange("background", e.target.value)}
                               onBlur={(e) => handleCharacterChange("background", e.target.value)}
-                              className="bg-contrast-3 text-white p-1 rounded w-full"
                            />
                         </div>
                      </div>
@@ -127,7 +123,7 @@ export default function Navbar() {
                   <div className="grid grid-cols-3 gap-4">
                      <div>
                         <label className="block font-bold">Armor Class:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.armorClass}
                            onChange={(e) =>
@@ -136,12 +132,11 @@ export default function Navbar() {
                            onBlur={(e) =>
                               handleCharacterChange("armorClass", parseInt(e.target.value))
                            }
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
                         <label className="block font-bold">Initiative Bonus:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.initiativeBonus}
                            onChange={(e) =>
@@ -150,19 +145,17 @@ export default function Navbar() {
                            onBlur={(e) =>
                               handleCharacterChange("initiativeBonus", parseInt(e.target.value))
                            }
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
                         <label className="block font-bold">Speed:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.speed}
                            onChange={(e) =>
                               handleCharacterChange("speed", parseInt(e.target.value))
                            }
                            onBlur={(e) => handleCharacterChange("speed", parseInt(e.target.value))}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
@@ -175,7 +168,6 @@ export default function Navbar() {
                            onBlur={(e) =>
                               handleCharacterChange("proficiency", parseInt(e.target.value))
                            }
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                   </div>
@@ -184,22 +176,20 @@ export default function Navbar() {
                   <div className="flex flex-col gap-2">
                      <div>
                         <label className="block font-bold">Current Hit Dice:</label>
-                        <input
+                        <Input
                            type="text"
                            value={character.currentHitDice}
                            onChange={(e) => handleCharacterChange("currentHitDice", e.target.value)}
                            onBlur={(e) => handleCharacterChange("currentHitDice", e.target.value)}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
                         <label className="block font-bold">Max Hit Dice:</label>
-                        <input
+                        <Input
                            type="text"
                            value={character.maxHitDice}
                            onChange={(e) => handleCharacterChange("maxHitDice", e.target.value)}
                            onBlur={(e) => handleCharacterChange("maxHitDice", e.target.value)}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                   </div>
@@ -208,7 +198,7 @@ export default function Navbar() {
                   <div className="grid grid-cols-3 gap-4">
                      <div>
                         <label className="block font-bold">Current HP:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.currentHP}
                            onChange={(e) =>
@@ -217,31 +207,28 @@ export default function Navbar() {
                            onBlur={(e) =>
                               handleCharacterChange("currentHP", parseInt(e.target.value))
                            }
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
                         <label className="block font-bold">Max HP:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.maxHP}
                            onChange={(e) =>
                               handleCharacterChange("maxHP", parseInt(e.target.value))
                            }
                            onBlur={(e) => handleCharacterChange("maxHP", parseInt(e.target.value))}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                      <div>
                         <label className="block font-bold">Temp HP:</label>
-                        <input
+                        <Input
                            type="number"
                            value={character.tempHP || 0}
                            onChange={(e) =>
                               handleCharacterChange("tempHP", parseInt(e.target.value))
                            }
                            onBlur={(e) => handleCharacterChange("tempHP", parseInt(e.target.value))}
-                           className="bg-contrast-3 text-white p-1 rounded w-full"
                         />
                      </div>
                   </div>
@@ -257,7 +244,7 @@ export default function Navbar() {
                               <div className="text-sm font-bold mb-1">
                                  {key.toUpperCase()}
                               </div>
-                              <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
+                              <div className="bg-contrast-2 text-contrast-10 w-16 h-16 flex items-center justify-center rounded">
                                  {attr.getModifierString()}
                               </div>
                               <InputSmartNumber

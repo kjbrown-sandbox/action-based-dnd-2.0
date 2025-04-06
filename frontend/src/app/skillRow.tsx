@@ -119,7 +119,7 @@ export default function SkillRow({ skillKey }: SkillRowProps) {
          <div className="flex-1 text-sm font-bold">{skillKey.toUpperCase()}</div>
          <Tooltip delayDuration={1000}>
             <TooltipTrigger asChild>
-               <div className="text-white ml-auto cursor-pointer">{totalModifierString}</div>
+               <div className="text-contrast-10 ml-auto cursor-pointer">{totalModifierString}</div>
             </TooltipTrigger>
             <TooltipContent>
                <div className="flex flex-col gap-1">

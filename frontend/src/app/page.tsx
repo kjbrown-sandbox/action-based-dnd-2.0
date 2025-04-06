@@ -24,7 +24,7 @@ export default function Home() {
    }
 
    return (
-      <div className="min-h-screen h-200 bg-contrast-0 text-white flex flex-col">
+      <div className="min-h-screen h-200 bg-contrast-0 text-contrast-10 flex flex-col">
          <Navbar />
          <div className="flex-1 flex bg-contrast-0">
             <ExtraInfoPanels />

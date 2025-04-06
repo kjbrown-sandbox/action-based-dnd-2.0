@@ -13,16 +13,13 @@ export default function ActionsDisplay() {
 
    const { actions } = context;
 
-   const groupedActions = actions.reduce<Record<string, Action[]>>(
-      (acc, action) => {
-         action.triggers.forEach((trigger) => {
-            if (!acc[trigger]) acc[trigger] = [];
-            acc[trigger].push(action);
-         });
-         return acc;
-      },
-      {}
-   );
+   const groupedActions = actions.reduce<Record<string, Action[]>>((acc, action) => {
+      action.triggers.forEach((trigger) => {
+         if (!acc[trigger]) acc[trigger] = [];
+         acc[trigger].push(action);
+      });
+      return acc;
+   }, {});
 
    return (
       <div className="flex-2 p-4">
@@ -35,18 +32,13 @@ export default function ActionsDisplay() {
                   <h3 className="text-lg font-semibold mb-2">{trigger}</h3>
                   <ul className="space-y-2">
                      {actions.map((action, index) => (
-                        <li
-                           key={index}
-                           className="bg-contrast-4 p-4 rounded shadow"
-                        >
+                        <li key={index} className="bg-contrast-1 p-4 rounded shadow">
                            <p>
                               <strong>{action.title}</strong>
                            </p>
                            {action.description && <p>{action.description}</p>}
                            {action.time && <p>Time: {action.time}</p>}
-                           {action.attack && (
-                              <p>Attack: {action.attack.damage}</p>
-                           )}
+                           {action.attack && <p>Attack: {action.attack.damage}</p>}
                         </li>
                      ))}
                   </ul>

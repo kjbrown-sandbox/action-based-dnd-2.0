@@ -47,7 +47,7 @@ export default function ExtraInfoPanels() {
    };
 
    return (
-      <div className="flex flex-1 flex-col m-4 text-white bg-contrast-1">
+      <div className="flex flex-1 flex-col m-4 text-contrast-10 bg-contrast-1">
          {/* Tabs */}
          <TabCollection
             labels={["Add Action", "Attributes & Skills"]}
@@ -93,7 +93,7 @@ export default function ExtraInfoPanels() {
                                     id="title"
                                     name="title"
                                     placeholder="Action Title"
-                                    className="w-full p-2 rounded bg-contrast-3 text-white"
+                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <div className="mb-4">
@@ -105,7 +105,7 @@ export default function ExtraInfoPanels() {
                                     name="description"
                                     as="textarea"
                                     placeholder="Action Description"
-                                    className="w-full p-2 rounded bg-contrast-3 text-white"
+                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <div className="mb-4">
@@ -116,7 +116,7 @@ export default function ExtraInfoPanels() {
                                     id="time"
                                     name="time"
                                     placeholder="e.g., Action, Bonus Action"
-                                    className="w-full p-2 rounded bg-contrast-3 text-white"
+                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <div className="mb-4">
@@ -127,7 +127,7 @@ export default function ExtraInfoPanels() {
                                     id="attack"
                                     name="attack"
                                     placeholder="e.g., 1d8 slashing"
-                                    className="w-full p-2 rounded bg-contrast-3 text-white"
+                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <div className="mb-4">
@@ -138,7 +138,7 @@ export default function ExtraInfoPanels() {
                                     id="triggers"
                                     name="triggers"
                                     placeholder="e.g., Enemy casts spell, Bonus Action"
-                                    className="w-full p-2 rounded bg-contrast-3 text-white"
+                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <Button type="submit" className="w-full">
@@ -153,7 +153,7 @@ export default function ExtraInfoPanels() {
 
             {activeTab === 1 && (
                <div>
-                  <div className="flex flex-col gap-8 h-full">
+                  <div className="flex flex-col gap-6 h-full">
                      {/* Attributes Section */}
                      <div className="grid grid-cols-6 gap-4">
                         {ATTRIBUTE_LIST.map((attribute) => (
@@ -161,7 +161,7 @@ export default function ExtraInfoPanels() {
                               <div className="text-sm font-bold mb-1">
                                  {attribute.toUpperCase()}
                               </div>
-                              <div className="bg-contrast-2 text-white w-16 h-16 flex items-center justify-center rounded">
+                              <div className="bg-contrast-2 text-contrast-10 w-16 h-16 flex items-center justify-center rounded">
                                  {character?.attributes[attribute]?.getModifierString() ?? 10}
                               </div>
                               <div className="bg-contrast-3 relative top-[-15px]">
