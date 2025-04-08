@@ -13,6 +13,7 @@ import { Attribute, Character, LAST_USED_CHARACTER_ID } from "./types";
 import InputSmartNumber from "@/components/ui/inputSmartNumber";
 import { Autocomplete } from "@/components/ui/Autocomplete";
 import { Input } from "@/components/ui/input";
+import { Circle, CheckCircle, Skull } from "lucide-react";
 
 export default function Navbar() {
    const context = useContext(AppContext);
@@ -37,6 +38,14 @@ export default function Navbar() {
       const updatedCharacter = { ...character, [key]: value };
       setCharacter(updatedCharacter);
       localStorage.setItem(LAST_USED_CHARACTER_ID, `${updatedCharacter.id}`); // Save the character ID to local storage
+      await saveCharacterToIndexedDB(updatedCharacter);
+   };
+
+   const handleDeathSaveChange = async (key: "successes" | "failures", value: number) => {
+      if (!character) return;
+      const updatedCharacter = { ...character };
+      updatedCharacter.deathSaves[key] = value;
+      setCharacter(updatedCharacter);
       await saveCharacterToIndexedDB(updatedCharacter);
    };
 
@@ -232,7 +241,65 @@ export default function Navbar() {
                         />
                      </div>
                   </div>
-
+                  <Divider orientation="vertical" size="lg" />
+                  {/* Death saves section */}
+                  <div className="flex flex-col gap-4 w-100">
+                     <h2 className="text-lg font-bold">Death Saves</h2>
+                     <div className="flex flex-col gap-2">
+                        {/* Saves */}
+                        <div className="">
+                           <h3 className="text-sm font-bold mb-1">Saves</h3>
+                           <div className="flex justify-between w-20">
+                              {[0, 1, 2].map((index) => (
+                                 <button
+                                    key={`save-${index}`}
+                                    onClick={() =>
+                                       handleDeathSaveChange(
+                                          "successes",
+                                          character.deathSaves.successes === index + 1
+                                             ? index
+                                             : index + 1
+                                       )
+                                    }
+                                    className="text-contrast-6 hover:text-contrast-10 transition-colors"
+                                 >
+                                    {character.deathSaves.successes > index ? (
+                                       <CheckCircle size={20} />
+                                    ) : (
+                                       <Circle size={20} />
+                                    )}
+                                 </button>
+                              ))}
+                           </div>
+                        </div>
+                        {/* Failures */}
+                        <div>
+                           <h3 className="text-sm font-bold mb-1">Failures</h3>
+                           <div className="flex justify-between w-20">
+                              {[0, 1, 2].map((index) => (
+                                 <button
+                                    key={`failure-${index}`}
+                                    onClick={() =>
+                                       handleDeathSaveChange(
+                                          "failures",
+                                          character.deathSaves.failures === index + 1
+                                             ? index
+                                             : index + 1
+                                       )
+                                    }
+                                    className="text-contrast-6 hover:text-contrast-10 transition-colors"
+                                 >
+                                    {character.deathSaves.failures > index ? (
+                                       <Skull size={20} />
+                                    ) : (
+                                       <Circle size={20} />
+                                    )}
+                                 </button>
+                              ))}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                   {/* New Section: Attributes */}
                   {/* <div className="grid grid-cols-6 gap-4">
                      {Object.entries(character.attributes).map(

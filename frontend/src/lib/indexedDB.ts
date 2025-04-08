@@ -161,6 +161,10 @@ function sterilizeDatabaseCharacter(dbCharacter: any): Character {
    const character: Character = {
       ...defaultCharacter,
       ...dbCharacter,
+      deathSaves: {
+         successes: dbCharacter.deathSaves?.successes || 0,
+         failures: dbCharacter.deathSaves?.failures || 0,
+      },
    };
    return character;
 }

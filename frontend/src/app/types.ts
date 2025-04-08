@@ -115,7 +115,10 @@ export type Character = {
    tempHP?: string;
    currentHitDice: string; // Added currentHitDice
    maxHitDice: string; // Added maxHitDice
-   deathSaves: { successes: number; failures: number };
+   deathSaves: {
+      successes: number; // Number of successful death saves (0-3)
+      failures: number; // Number of failed death saves (0-3)
+   };
    attributes: {
       // str: Attribute; // Strength
       // dex: Attribute; // Dexterity
