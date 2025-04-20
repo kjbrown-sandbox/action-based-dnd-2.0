@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import "./globals.css";
-import { Action, Attribute, ATTRIBUTE_LIST, Character, SKILL_LIST } from "./types";
+import { Action, Attribute, ATTRIBUTE_LIST, Character, SKILL_LIST, Spell } from "./types";
 import { Button } from "../components/ui/button";
 import { saveActionToIndexedDB, saveCharacterToIndexedDB } from "../lib/indexedDB";
 import { Divider } from "@/components/ui/Divider";
@@ -13,6 +13,7 @@ import { copyCharacter } from "lib/utils";
 import SkillRow from "./skillRow";
 import { TabCollection } from "@/components/ui/TabCollection";
 import { Tab } from "@/components/ui/Tab";
+import { Switch } from "../components/ui/switch";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -22,6 +23,8 @@ export default function ExtraInfoPanels() {
 
    const { setActions, character, setCharacter } = context;
    const [activeTab, setActiveTab] = useState(0);
+   const [isSpell, setIsSpell] = useState(false);
+   const [spellDetails, setSpellDetails] = useState<Spell>({});
 
    const handleSubmit = async (values: Action, { resetForm }: any) => {
       try {
@@ -40,6 +43,10 @@ export default function ExtraInfoPanels() {
       updatedCharacter.attributes[key] = newAttribute;
       setCharacter(updatedCharacter);
       saveCharacterToIndexedDB(updatedCharacter);
+   };
+
+   const handleSpellChange = (field: keyof Spell, value: any) => {
+      setSpellDetails((prev) => ({ ...prev, [field]: value }));
    };
 
    type FormValues = Omit<Action, "triggers" | "id" | "characterID"> & {
@@ -141,6 +148,97 @@ export default function ExtraInfoPanels() {
                                     className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
+                              <Divider />
+
+                              <div className="my-4">
+                                 <label className="flex items-center gap-2">
+                                    <Switch
+                                       checked={isSpell}
+                                       onCheckedChange={(checked) => setIsSpell(checked)}
+                                    />
+                                    Is spell?
+                                 </label>
+                              </div>
+                              {isSpell && (
+                                 <div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1" htmlFor="spell-level">
+                                          Level
+                                       </label>
+                                       <InputSmartNumber
+                                          id="spell-level"
+                                          onChange={(e) =>
+                                             handleSpellChange("level", e.target.value)
+                                          }
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1" htmlFor="spell-school">
+                                          School
+                                       </label>
+                                       <input
+                                          id="spell-school"
+                                          type="text"
+                                          onChange={(e) =>
+                                             handleSpellChange("school", e.target.value)
+                                          }
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1" htmlFor="spell-components">
+                                          Components
+                                       </label>
+                                       <input
+                                          id="spell-components"
+                                          type="text"
+                                          onChange={(e) =>
+                                             handleSpellChange(
+                                                "components",
+                                                e.target.value.split(",")
+                                             )
+                                          }
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="flex items-center gap-2">
+                                          <Switch
+                                             checked={spellDetails.concentration || false}
+                                             onCheckedChange={(checked) =>
+                                                handleSpellChange("concentration", checked)
+                                             }
+                                          />
+                                          Concentration
+                                       </label>
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1" htmlFor="spell-classes">
+                                          Classes
+                                       </label>
+                                       <input
+                                          id="spell-classes"
+                                          type="text"
+                                          onChange={(e) =>
+                                             handleSpellChange("classes", e.target.value.split(","))
+                                          }
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="flex items-center gap-2">
+                                          <Switch
+                                             checked={spellDetails.ritual || false}
+                                             onCheckedChange={(checked) =>
+                                                handleSpellChange("ritual", checked)
+                                             }
+                                          />
+                                          Ritual
+                                       </label>
+                                    </div>
+                                 </div>
+                              )}
                               <Button type="submit" className="w-full">
                                  Add Action
                               </Button>

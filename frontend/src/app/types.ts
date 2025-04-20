@@ -31,10 +31,25 @@ export interface Range {
    long?: number;
 }
 
+export interface AreaOfEffect {
+   shape: "cone" | "sphere" | "cube" | "line" | "other";
+   size: number; // Size of the area of effect
+}
+
 export interface Attack {
    damage: string;
    type: DamageType;
    range?: Range;
+   areaOfEffect?: AreaOfEffect;
+}
+
+export interface Spell {
+   level?: number;
+   school?: string;
+   components?: string[];
+   concentration?: boolean;
+   classes?: string[];
+   ritual?: boolean;
 }
 
 export interface Action {
@@ -45,6 +60,8 @@ export interface Action {
    time?: TimeAction;
    attack?: Attack;
    triggers: (CommonTrigger | string)[];
+   spell?: Spell; // New field for spell-specific attributes
+   source?: string; // New field for source information
 }
 
 export interface CharacterData {

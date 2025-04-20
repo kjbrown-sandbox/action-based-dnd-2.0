@@ -146,7 +146,7 @@ export default function SkillRow({ skillKey }: SkillRowProps) {
                         <Circle size={6} />
                         <span>PROF. MULTIPLIER</span>
                      </div>
-                     <span>{`→ (${skillProficiency.proficiencyMultiplier}`}</span>
+                     <span>{`→ (x${skillProficiency.proficiencyMultiplier})`}</span>
                   </div>
                   <div className="flex items-center justify-between gap-2 font-bold">
                      <div className="flex items-center gap-2">
