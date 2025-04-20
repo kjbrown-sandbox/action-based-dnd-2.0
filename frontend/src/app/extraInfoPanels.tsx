@@ -69,7 +69,7 @@ export default function ExtraInfoPanels() {
                            attack: undefined,
                            triggers: "",
                            spell: {
-                              level: undefined,
+                              level: 0,
                               school: "",
                               components: {
                                  verbal: false,
@@ -86,6 +86,7 @@ export default function ExtraInfoPanels() {
                               console.error("Character not found");
                               return;
                            }
+                           console.log("submitting values", values);
 
                            const formattedValues: Action = {
                               ...values,
@@ -183,7 +184,6 @@ export default function ExtraInfoPanels() {
                                           onChange={(e) =>
                                              setFieldValue("spell.level", e.target.value)
                                           }
-                                          // className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">
