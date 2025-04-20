@@ -43,10 +43,16 @@ export interface Attack {
    areaOfEffect?: AreaOfEffect;
 }
 
+type SpellComponent = {
+   verbal?: boolean;
+   somatic?: boolean;
+   material?: string;
+};
+
 export interface Spell {
    level?: number;
    school?: string;
-   components?: string[];
+   components?: SpellComponent;
    concentration?: boolean;
    classes?: string[];
    ritual?: boolean;

@@ -24,7 +24,6 @@ export default function ExtraInfoPanels() {
    const { setActions, character, setCharacter } = context;
    const [activeTab, setActiveTab] = useState(0);
    const [isSpell, setIsSpell] = useState(false);
-   const [spellDetails, setSpellDetails] = useState<Spell>({});
 
    const handleSubmit = async (values: Action, { resetForm }: any) => {
       try {
@@ -43,10 +42,6 @@ export default function ExtraInfoPanels() {
       updatedCharacter.attributes[key] = newAttribute;
       setCharacter(updatedCharacter);
       saveCharacterToIndexedDB(updatedCharacter);
-   };
-
-   const handleSpellChange = (field: keyof Spell, value: any) => {
-      setSpellDetails((prev) => ({ ...prev, [field]: value }));
    };
 
    type FormValues = Omit<Action, "triggers" | "id" | "characterID"> & {
@@ -73,6 +68,18 @@ export default function ExtraInfoPanels() {
                            time: undefined,
                            attack: undefined,
                            triggers: "",
+                           spell: {
+                              level: undefined,
+                              school: "",
+                              components: {
+                                 verbal: false,
+                                 somatic: false,
+                                 material: "",
+                              },
+                              concentration: false,
+                              classes: [],
+                              ritual: false,
+                           },
                         }}
                         onSubmit={(values, actions) => {
                            if (!character) {
@@ -89,7 +96,7 @@ export default function ExtraInfoPanels() {
                            handleSubmit(formattedValues, actions);
                         }}
                      >
-                        {() => (
+                        {({ values, setFieldValue }) => (
                            <Form className="bg-contrast-2 p-6 rounded shadow-md w-full max-w-md">
                               <h2 className="text-xl font-bold mb-4">Add New Action</h2>
                               <div className="mb-4">
@@ -153,13 +160,18 @@ export default function ExtraInfoPanels() {
                               <div className="my-4">
                                  <label className="flex items-center gap-2">
                                     <Switch
-                                       checked={isSpell}
-                                       onCheckedChange={(checked) => setIsSpell(checked)}
+                                       checked={values.spell !== undefined}
+                                       onCheckedChange={(checked) =>
+                                          setFieldValue(
+                                             "spell",
+                                             checked ? { ...values.spell } : undefined
+                                          )
+                                       }
                                     />
                                     Is spell?
                                  </label>
                               </div>
-                              {isSpell && (
+                              {values.spell && (
                                  <div>
                                     <div className="mb-4">
                                        <label className="block mb-1" htmlFor="spell-level">
@@ -167,10 +179,11 @@ export default function ExtraInfoPanels() {
                                        </label>
                                        <InputSmartNumber
                                           id="spell-level"
+                                          value={values.spell.level || ""}
                                           onChange={(e) =>
-                                             handleSpellChange("level", e.target.value)
+                                             setFieldValue("spell.level", e.target.value)
                                           }
-                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                          // className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">
@@ -180,8 +193,9 @@ export default function ExtraInfoPanels() {
                                        <input
                                           id="spell-school"
                                           type="text"
+                                          value={values.spell.school || ""}
                                           onChange={(e) =>
-                                             handleSpellChange("school", e.target.value)
+                                             setFieldValue("spell.school", e.target.value)
                                           }
                                           className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
@@ -190,24 +204,54 @@ export default function ExtraInfoPanels() {
                                        <label className="block mb-1" htmlFor="spell-components">
                                           Components
                                        </label>
-                                       <input
-                                          id="spell-components"
-                                          type="text"
-                                          onChange={(e) =>
-                                             handleSpellChange(
-                                                "components",
-                                                e.target.value.split(",")
-                                             )
-                                          }
-                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
-                                       />
+                                       <div className="mb-4">
+                                          <label className="flex items-center gap-2">
+                                             <Switch
+                                                checked={values.spell?.components?.verbal || false}
+                                                onCheckedChange={(checked) =>
+                                                   setFieldValue("spell.components.verbal", checked)
+                                                }
+                                             />
+                                             Verbal
+                                          </label>
+                                       </div>
+                                       <div className="mb-4">
+                                          <label className="flex items-center gap-2">
+                                             <Switch
+                                                checked={values.spell.components?.somatic || false}
+                                                onCheckedChange={(checked) =>
+                                                   setFieldValue(
+                                                      "spell.components.somatic",
+                                                      checked
+                                                   )
+                                                }
+                                             />
+                                             Somatic
+                                          </label>
+                                       </div>
+                                       <div className="mb-4">
+                                          <label>
+                                             Material Description:
+                                             <input
+                                                type="text"
+                                                value={values.spell.components?.material || ""}
+                                                onChange={(e) =>
+                                                   setFieldValue(
+                                                      "spell.components.material",
+                                                      e.target.value
+                                                   )
+                                                }
+                                                className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                             />
+                                          </label>
+                                       </div>
                                     </div>
                                     <div className="mb-4">
                                        <label className="flex items-center gap-2">
                                           <Switch
-                                             checked={spellDetails.concentration || false}
+                                             checked={values.spell.concentration || false}
                                              onCheckedChange={(checked) =>
-                                                handleSpellChange("concentration", checked)
+                                                setFieldValue("spell.concentration", checked)
                                              }
                                           />
                                           Concentration
@@ -220,8 +264,12 @@ export default function ExtraInfoPanels() {
                                        <input
                                           id="spell-classes"
                                           type="text"
+                                          value={values.spell.classes || ""}
                                           onChange={(e) =>
-                                             handleSpellChange("classes", e.target.value.split(","))
+                                             setFieldValue(
+                                                "spell.classes",
+                                                e.target.value.split(",")
+                                             )
                                           }
                                           className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
@@ -229,9 +277,9 @@ export default function ExtraInfoPanels() {
                                     <div className="mb-4">
                                        <label className="flex items-center gap-2">
                                           <Switch
-                                             checked={spellDetails.ritual || false}
+                                             checked={values.spell.ritual || false}
                                              onCheckedChange={(checked) =>
-                                                handleSpellChange("ritual", checked)
+                                                setFieldValue("spell.ritual", checked)
                                              }
                                           />
                                           Ritual
