@@ -195,18 +195,13 @@ export default function ExtraInfoPanels() {
                               <div className="my-4">
                                  <label className="flex items-center gap-2">
                                     <Switch
-                                       checked={values.spell !== undefined}
-                                       onCheckedChange={(checked) =>
-                                          setFieldValue(
-                                             "spell",
-                                             checked ? { ...values.spell } : undefined
-                                          )
-                                       }
+                                       checked={isSpell}
+                                       onCheckedChange={(checked) => setIsSpell(checked)}
                                     />
                                     Is spell?
                                  </label>
                               </div>
-                              {values.spell && (
+                              {isSpell && (
                                  <div>
                                     <div className="mb-4">
                                        <label className="block mb-1" htmlFor="spell-level">
