@@ -14,6 +14,7 @@ import SkillRow from "./skillRow";
 import { TabCollection } from "@/components/ui/TabCollection";
 import { Tab } from "@/components/ui/Tab";
 import { Switch } from "../components/ui/switch";
+import { Autocomplete } from "../components/ui/Autocomplete";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -24,6 +25,20 @@ export default function ExtraInfoPanels() {
    const { setActions, character, setCharacter } = context;
    const [activeTab, setActiveTab] = useState(0);
    const [isSpell, setIsSpell] = useState(false);
+
+   // Define spell level options for the autocomplete
+   const spellLevelOptions = [
+      { value: "cantrip", label: "Cantrip" },
+      { value: "1", label: "1st Level" },
+      { value: "2", label: "2nd Level" },
+      { value: "3", label: "3rd Level" },
+      { value: "4", label: "4th Level" },
+      { value: "5", label: "5th Level" },
+      { value: "6", label: "6th Level" },
+      { value: "7", label: "7th Level" },
+      { value: "8", label: "8th Level" },
+      { value: "9", label: "9th Level" },
+   ];
 
    const handleSubmit = async (values: Action, { resetForm }: any) => {
       try {
@@ -69,7 +84,7 @@ export default function ExtraInfoPanels() {
                            attack: undefined,
                            triggers: "",
                            spell: {
-                              level: 0,
+                              level: "cantrip",
                               school: "",
                               components: {
                                  verbal: false,
@@ -94,6 +109,11 @@ export default function ExtraInfoPanels() {
                               characterID: character.id,
                               triggers: values.triggers.split(",").map((t) => t.trim()),
                            };
+
+                           if (!isSpell) {
+                              delete formattedValues.spell;
+                           }
+
                            handleSubmit(formattedValues, actions);
                         }}
                      >
@@ -178,12 +198,12 @@ export default function ExtraInfoPanels() {
                                        <label className="block mb-1" htmlFor="spell-level">
                                           Level
                                        </label>
-                                       <InputSmartNumber
-                                          id="spell-level"
-                                          value={values.spell.level || ""}
-                                          onChange={(e) =>
-                                             setFieldValue("spell.level", e.target.value)
-                                          }
+                                       <Autocomplete
+                                          items={spellLevelOptions}
+                                          value={values.spell.level?.toString() || null}
+                                          onSelect={(value) => setFieldValue("spell.level", value)}
+                                          placeholder="Select spell level"
+                                          // buttonClassName="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">

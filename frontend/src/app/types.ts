@@ -46,11 +46,11 @@ export interface Attack {
 type SpellComponent = {
    verbal?: boolean;
    somatic?: boolean;
-   material?: string;
+   material?: string; // Description for material components
 };
 
 export interface Spell {
-   level?: number;
+   level?: number | string; // Allow both number and string (for "cantrip") types
    school?: string;
    components?: SpellComponent;
    concentration?: boolean;
