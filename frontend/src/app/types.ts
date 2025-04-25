@@ -1,12 +1,23 @@
-export type TimeAction =
-   | "reaction"
-   | "bonus action"
-   | "action"
-   | "movement"
-   | "free action"
-   | "short rest"
-   | "long rest"
-   | "other";
+// export type TimeAction =
+//    | "reaction"
+//    | "bonus action"
+//    | "action"
+//    | "movement"
+//    | "free action"
+//    | "short rest"
+//    | "long rest"
+//    | "other";
+export const TIME_ACTIONS = [
+   "reaction",
+   "bonus action",
+   "action",
+   "movement",
+   "free action",
+   "short rest",
+   "long rest",
+   "other",
+] as const;
+export type TimeAction = (typeof TIME_ACTIONS)[number];
 
 export type DamageType =
    | "bludgeoning"

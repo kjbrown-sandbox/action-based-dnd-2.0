@@ -4,6 +4,32 @@ import { useContext } from "react";
 import { AppContext } from "./context";
 import "./globals.css";
 import { Action } from "./types";
+import {
+   Accordion,
+   AccordionItem,
+   AccordionTrigger,
+   AccordionContent,
+} from "../components/ui/accordion";
+import React from "react";
+
+function ActionRow({ action }: { action: Action }) {
+   return (
+      <AccordionItem value={`action-${action.id}`}>
+         <AccordionTrigger>
+            <div className="flex justify-between">
+               <span>{action.title}</span>
+               <span>{action.time}</span>
+               {action.attack && <span>Damage: {action.attack.damage}</span>}
+            </div>
+         </AccordionTrigger>
+         <AccordionContent>
+            {action.description && <p>{action.description}</p>}
+            {action.spell && <p>Spell: {JSON.stringify(action.spell)}</p>}
+            {action.triggers && <p>Triggers: {action.triggers.join(", ")}</p>}
+         </AccordionContent>
+      </AccordionItem>
+   );
+}
 
 export default function ActionsDisplay() {
    const context = useContext(AppContext);
@@ -13,38 +39,67 @@ export default function ActionsDisplay() {
 
    const { actions } = context;
 
-   const groupedActions = actions.reduce<Record<string, Action[]>>((acc, action) => {
-      action.triggers.forEach((trigger) => {
-         if (!acc[trigger]) acc[trigger] = [];
-         acc[trigger].push(action);
+   // const groupedActions = actions.reduce<Record<string, Record<string, Action[]>>>(
+   //    (acc, action) => {
+   //       if (!action.time) return acc;
+   //       const timeKey = action.time as string;
+   //       action.triggers.forEach((trigger) => {
+   //          if (!acc[timeKey]) acc[timeKey] = {};
+   //          if (!acc[timeKey][trigger]) acc[timeKey][trigger] = [];
+   //          acc[timeKey][trigger].push(action);
+   //       });
+   //       return acc;
+   //    },
+   //    {}
+   // );
+   const groupedActions = actions.reduce<Record<string, Action[]>>((groupsSoFar, currAction) => {
+      if (currAction.time) {
+         if (!groupsSoFar[currAction.time]) {
+            groupsSoFar[currAction.time] = [];
+         }
+         groupsSoFar[currAction.time].push(currAction);
+      }
+
+      currAction.triggers.forEach((trigger) => {
+         if (!groupsSoFar[trigger]) {
+            groupsSoFar[trigger] = [];
+         }
+         groupsSoFar[trigger].push(currAction);
       });
-      return acc;
+
+      return groupsSoFar;
    }, {});
 
+   const timeGroups = Object.entries(groupedActions);
+
+   console.log("groupedActions", groupedActions);
+   console.log("timeGroups", timeGroups);
+
    return (
-      <div className="flex-2 p-4">
-         <h2 className="text-xl font-bold mb-4">Actions by Trigger</h2>
-         {Object.keys(groupedActions).length === 0 ? (
-            <p className="text-contrast-5">No actions added yet.</p>
-         ) : (
-            Object.entries(groupedActions).map(([trigger, actions]) => (
-               <div key={trigger} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">{trigger}</h3>
-                  <ul className="space-y-2">
-                     {actions.map((action, index) => (
-                        <li key={index} className="bg-contrast-1 p-4 rounded shadow">
-                           <p>
-                              <strong>{action.title}</strong>
-                           </p>
-                           {action.description && <p>{action.description}</p>}
-                           {action.time && <p>Time: {action.time}</p>}
-                           {action.attack && <p>Attack: {action.attack.damage}</p>}
-                        </li>
-                     ))}
-                  </ul>
+      <div className="flex flex-2 gap-4 p-4">
+         <div className="grid grid-cols-3 gap-4 w-full">
+            {timeGroups.map(([key, actions]) => (
+               <div key={key} className="flex flex-col">
+                  <Accordion type="multiple">
+                     <AccordionItem value={`group-${key}`}>
+                        <AccordionTrigger>
+                           <div className="flex justify-between w-full">
+                              <h1>{key.charAt(0).toUpperCase() + key.slice(1)}</h1>
+                              <span>{actions.length} options</span>
+                           </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                           <div className="flex flex-col gap-4">
+                              {actions.map((action) => (
+                                 <ActionRow key={action.id} action={action} />
+                              ))}
+                           </div>
+                        </AccordionContent>
+                     </AccordionItem>
+                  </Accordion>
                </div>
-            ))
-         )}
+            ))}
+         </div>
       </div>
    );
 }
