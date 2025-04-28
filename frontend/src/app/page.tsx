@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import "./globals.css";
 import { Action, Character } from "./types";
 import { Button } from "../components/ui/button";
+import { FormInput } from "../components/ui/form/FormInput";
 import {
    saveActionToIndexedDB,
    getActionsFromIndexedDB,

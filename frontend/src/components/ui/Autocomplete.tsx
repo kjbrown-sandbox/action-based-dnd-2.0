@@ -13,11 +13,7 @@ import {
    CommandItem,
    CommandList,
 } from "@/components/ui/command";
-import {
-   Popover,
-   PopoverContent,
-   PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface AutocompleteProps<T> {
    items: { value: string; label: string }[]; // List of items with value/label shape
@@ -49,7 +45,10 @@ export function Autocomplete<T>({
                variant="outline"
                role="combobox"
                aria-expanded={open}
-               className={cn("w-[200px] justify-between", buttonClassName)}
+               className={cn(
+                  "w-[200px] justify-between rounded-sm bg-input/10 border-red-500",
+                  buttonClassName
+               )}
             >
                {selectedItem ? selectedItem.label : placeholder}
                <ChevronsUpDown className="opacity-50" />
@@ -57,10 +56,7 @@ export function Autocomplete<T>({
          </PopoverTrigger>
          <PopoverContent className={cn("w-[200px] p-0", contentClassName)}>
             <Command>
-               <CommandInput
-                  placeholder="Search..."
-                  className={cn("h-9", inputClassName)}
-               />
+               <CommandInput placeholder="Search..." className={cn("h-9", inputClassName)} />
                <CommandList>
                   <CommandEmpty>No items found.</CommandEmpty>
                   <CommandGroup>
@@ -77,9 +73,7 @@ export function Autocomplete<T>({
                            <Check
                               className={cn(
                                  "ml-auto",
-                                 value === item.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
+                                 value === item.value ? "opacity-100" : "opacity-0"
                               )}
                            />
                         </CommandItem>

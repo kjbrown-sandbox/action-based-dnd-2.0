@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useContext } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import "./globals.css";
 import {
    Action,
@@ -23,6 +23,8 @@ import { TabCollection } from "@/components/ui/TabCollection";
 import { Tab } from "@/components/ui/Tab";
 import { Switch } from "../components/ui/switch";
 import { Autocomplete } from "../components/ui/Autocomplete";
+import { Input } from "../components/ui/input";
+import { FormInput } from "../components/ui/form/FormInput";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -138,23 +140,16 @@ export default function ExtraInfoPanels() {
                                  <label className="block mb-1" htmlFor="title">
                                     Title
                                  </label>
-                                 <Field
-                                    id="title"
-                                    name="title"
-                                    placeholder="Action Title"
-                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
-                                 />
+                                 <FormInput name="title" placeholder="Action Title" />
                               </div>
                               <div className="mb-4">
                                  <label className="block mb-1" htmlFor="description">
                                     Description
                                  </label>
-                                 <Field
-                                    id="description"
+                                 <FormInput
                                     name="description"
-                                    as="textarea"
                                     placeholder="Action Description"
-                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                    type="textarea"
                                  />
                               </div>
                               <div className="mb-4">
@@ -172,22 +167,15 @@ export default function ExtraInfoPanels() {
                                  <label className="block mb-1" htmlFor="attack">
                                     Attack
                                  </label>
-                                 <Field
-                                    id="attack"
-                                    name="attack"
-                                    placeholder="e.g., 1d8 slashing"
-                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
-                                 />
+                                 <FormInput name="attack" placeholder="e.g., 1d8 slashing" />
                               </div>
                               <div className="mb-4">
                                  <label className="block mb-1" htmlFor="triggers">
                                     Triggers (comma-separated)
                                  </label>
-                                 <Field
-                                    id="triggers"
+                                 <FormInput
                                     name="triggers"
                                     placeholder="e.g., Enemy casts spell, Bonus Action"
-                                    className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                  />
                               </div>
                               <Divider />
@@ -209,24 +197,22 @@ export default function ExtraInfoPanels() {
                                        </label>
                                        <Autocomplete
                                           items={spellLevelOptions}
-                                          value={values.spell.level?.toString() || null}
+                                          value={values.spell?.level?.toString() || null}
                                           onSelect={(value) => setFieldValue("spell.level", value)}
                                           placeholder="Select spell level"
-                                          // buttonClassName="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">
                                        <label className="block mb-1" htmlFor="spell-school">
                                           School
                                        </label>
-                                       <input
+                                       <Input
                                           id="spell-school"
                                           type="text"
-                                          value={values.spell.school || ""}
+                                          value={values.spell?.school || ""}
                                           onChange={(e) =>
                                              setFieldValue("spell.school", e.target.value)
                                           }
-                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">
@@ -247,7 +233,7 @@ export default function ExtraInfoPanels() {
                                        <div className="mb-4">
                                           <label className="flex items-center gap-2">
                                              <Switch
-                                                checked={values.spell.components?.somatic || false}
+                                                checked={values.spell?.components?.somatic || false}
                                                 onCheckedChange={(checked) =>
                                                    setFieldValue(
                                                       "spell.components.somatic",
@@ -261,16 +247,15 @@ export default function ExtraInfoPanels() {
                                        <div className="mb-4">
                                           <label>
                                              Material Description:
-                                             <input
+                                             <Input
                                                 type="text"
-                                                value={values.spell.components?.material || ""}
+                                                value={values.spell?.components?.material || ""}
                                                 onChange={(e) =>
                                                    setFieldValue(
                                                       "spell.components.material",
                                                       e.target.value
                                                    )
                                                 }
-                                                className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                              />
                                           </label>
                                        </div>
@@ -278,7 +263,7 @@ export default function ExtraInfoPanels() {
                                     <div className="mb-4">
                                        <label className="flex items-center gap-2">
                                           <Switch
-                                             checked={values.spell.concentration || false}
+                                             checked={values.spell?.concentration || false}
                                              onCheckedChange={(checked) =>
                                                 setFieldValue("spell.concentration", checked)
                                              }
@@ -290,23 +275,22 @@ export default function ExtraInfoPanels() {
                                        <label className="block mb-1" htmlFor="spell-classes">
                                           Classes
                                        </label>
-                                       <input
+                                       <Input
                                           id="spell-classes"
                                           type="text"
-                                          value={values.spell.classes || ""}
+                                          value={values.spell?.classes || ""}
                                           onChange={(e) =>
                                              setFieldValue(
                                                 "spell.classes",
                                                 e.target.value.split(",")
                                              )
                                           }
-                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
                                        />
                                     </div>
                                     <div className="mb-4">
                                        <label className="flex items-center gap-2">
                                           <Switch
-                                             checked={values.spell.ritual || false}
+                                             checked={values.spell?.ritual || false}
                                              onCheckedChange={(checked) =>
                                                 setFieldValue("spell.ritual", checked)
                                              }
