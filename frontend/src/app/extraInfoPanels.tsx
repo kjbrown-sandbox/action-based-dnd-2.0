@@ -25,6 +25,7 @@ import { Switch } from "../components/ui/switch";
 import { Autocomplete } from "../components/ui/Autocomplete";
 import { Input } from "../components/ui/input";
 import { FormInput } from "../components/ui/form/FormInput";
+import { FormInputSmartNumber } from "@/components/ui/form/FormInputSmartNumber";
 
 export default function ExtraInfoPanels() {
    const context = useContext(AppContext);
@@ -164,12 +165,6 @@ export default function ExtraInfoPanels() {
                                  />
                               </div>
                               <div className="mb-4">
-                                 <label className="block mb-1" htmlFor="attack">
-                                    Attack
-                                 </label>
-                                 <FormInput name="attack" placeholder="e.g., 1d8 slashing" />
-                              </div>
-                              <div className="mb-4">
                                  <label className="block mb-1" htmlFor="triggers">
                                     Triggers (comma-separated)
                                  </label>
@@ -179,7 +174,107 @@ export default function ExtraInfoPanels() {
                                  />
                               </div>
                               <Divider />
-
+                              <div className="my-4">
+                                 <label className="flex items-center gap-2">
+                                    <Switch
+                                       checked={!!values.attack}
+                                       onCheckedChange={(checked) =>
+                                          setFieldValue(
+                                             "attack",
+                                             checked
+                                                ? {
+                                                     damage: "",
+                                                     type: "",
+                                                     range: { normal: 0, long: undefined },
+                                                     areaOfEffect: { shape: "cone", size: 0 },
+                                                  }
+                                                : undefined
+                                          )
+                                       }
+                                    />
+                                    Does damage/healing?
+                                 </label>
+                              </div>
+                              {values.attack && (
+                                 <div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Damage</label>
+                                       <div className="flex gap-6">
+                                          <FormInput
+                                             name="attack.damage"
+                                             placeholder="2d6 + 2"
+                                             // className="w-1/2 p-2 rounded bg-contrast-3 text-contrast-10"
+                                          />
+                                          <FormInput
+                                             name="attack.type"
+                                             placeholder="slashing, necrotic, etc."
+                                             // className="w-1/2 p-2 rounded bg-contrast-3 text-contrast-10"
+                                          />
+                                       </div>
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Range</label>
+                                       <div className="flex gap-6 items-center">
+                                          <div className="flex direction-row gap-2 items-center">
+                                             <FormInputSmartNumber
+                                                name="attack.range.normal"
+                                                placeholder="Normal"
+                                                className="w-full"
+                                             />
+                                             <span>feet</span>
+                                          </div>
+                                          <div className="flex direction-row gap-2 items-center">
+                                             <FormInputSmartNumber
+                                                name="attack.range.long"
+                                                placeholder="Long"
+                                             />
+                                             <span>feet</span>
+                                          </div>
+                                          {/* <InputSmartNumber
+                                             value={character?.attributes[attribute]?.amount ?? 10}
+                                             onChange={(value) =>
+                                                handleAttributeChange(
+                                                   attribute,
+                                                   Number(value.target.value)
+                                                )
+                                             }
+                                          /> */}
+                                       </div>
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Area of Effect</label>
+                                       <div className="flex gap-6 items-center">
+                                          <div className="flex flex-1 direction-row gap-2 items-center">
+                                             <FormInputSmartNumber
+                                                name="attack.areaOfEffect.size"
+                                                placeholder="Normal"
+                                             />
+                                             <span>feet</span>
+                                          </div>
+                                          <div className="flex-1 w-10">
+                                             <Autocomplete
+                                                items={[
+                                                   { value: "cone", label: "Cone" },
+                                                   { value: "sphere", label: "Sphere" },
+                                                   { value: "cube", label: "Cube" },
+                                                   { value: "line", label: "Line" },
+                                                   { value: "other", label: "Other" },
+                                                ]}
+                                                value={values.attack.areaOfEffect?.shape || null}
+                                                onSelect={(value) =>
+                                                   setFieldValue("attack.areaOfEffect.shape", value)
+                                                }
+                                                placeholder="Shape"
+                                                buttonClassName="w-full"
+                                                inputClassName="w-full"
+                                                contentClassName="w-full"
+                                             />
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              )}
+                              <Divider />
                               <div className="my-4">
                                  <label className="flex items-center gap-2">
                                     <Switch

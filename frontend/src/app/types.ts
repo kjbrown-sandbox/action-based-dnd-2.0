@@ -1,12 +1,3 @@
-// export type TimeAction =
-//    | "reaction"
-//    | "bonus action"
-//    | "action"
-//    | "movement"
-//    | "free action"
-//    | "short rest"
-//    | "long rest"
-//    | "other";
 export const TIME_ACTIONS = [
    "reaction",
    "bonus action",
@@ -43,7 +34,7 @@ export interface Range {
 }
 
 export interface AreaOfEffect {
-   shape: "cone" | "sphere" | "cube" | "line" | "other";
+   shape: "cone" | "cube" | "line" | "sphere" | "other";
    size: number; // Size of the area of effect
 }
 

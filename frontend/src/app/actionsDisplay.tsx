@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { AppContext } from "./context";
 import "./globals.css";
-import { Action } from "./types";
+import { Action, Attack } from "./types";
 import {
    Accordion,
    AccordionItem,
@@ -11,21 +11,42 @@ import {
    AccordionContent,
 } from "../components/ui/accordion";
 import React from "react";
+import { Typography } from "@/components/ui/Typography";
 
 function ActionRow({ action }: { action: Action }) {
+   function getRangeString(range: Attack["range"]) {
+      if (!range) return "";
+
+      if (range.normal && range.long) {
+         return `(${range.normal}/${range.long})`;
+      }
+      if (range.normal || range.long) {
+         return `(${range.normal || range.long})`;
+      }
+
+      console.error("Invalid range object:", range);
+      return "";
+   }
+
    return (
       <AccordionItem value={`action-${action.id}`}>
          <AccordionTrigger>
-            <div className="flex justify-between">
-               <span>{action.title}</span>
-               <span>{action.time}</span>
-               {action.attack && <span>Damage: {action.attack.damage}</span>}
+            <div>
+               <Typography>{action.title}</Typography>
+               {action.attack && (
+                  <div>
+                     <Typography variant="muted">
+                        {action.attack.damage} {action.attack.type} damage{" "}
+                        {getRangeString(action.attack.range)}
+                     </Typography>
+                  </div>
+               )}
             </div>
          </AccordionTrigger>
          <AccordionContent>
-            {action.description && <p>{action.description}</p>}
-            {action.spell && <p>Spell: {JSON.stringify(action.spell)}</p>}
-            {action.triggers && <p>Triggers: {action.triggers.join(", ")}</p>}
+            {action.description && <Typography>{action.description}</Typography>}
+            {action.spell && <Typography>Spell: {JSON.stringify(action.spell)}</Typography>}
+            {action.triggers && <Typography>Triggers: {action.triggers.join(", ")}</Typography>}
          </AccordionContent>
       </AccordionItem>
    );
@@ -84,7 +105,7 @@ export default function ActionsDisplay() {
                      <AccordionItem value={`group-${key}`}>
                         <AccordionTrigger>
                            <div className="flex justify-between w-full">
-                              <h1>{key.charAt(0).toUpperCase() + key.slice(1)}</h1>
+                              <h1>{key.toUpperCase()}</h1>
                               <span>{actions.length} options</span>
                            </div>
                         </AccordionTrigger>

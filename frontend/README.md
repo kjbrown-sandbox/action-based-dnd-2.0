@@ -50,7 +50,7 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
    -  [ ] Need to show up somewhere in actions list
    -  [ ] Would be nice if they could store charges and amount
    -  [ ] Special option for weapons, can add more fields
--  [ ] Spells
+-  [x] Spells
    -  [ ] Maybe its own tab for unprepared spells?
 -  [ ] Clicking on stuff lets you roll dice
    -  [ ] Abilities
