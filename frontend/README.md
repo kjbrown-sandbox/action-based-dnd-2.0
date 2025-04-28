@@ -45,29 +45,36 @@ This is an interactive character sheet built for Dungeons and Dragons. The goal 
 -  [x] Attributes
 -  [x] Skills
    -  [x] Half proficient, full proficient, double proficient
--  [ ] Attacks/spells need to be connected to ability scores
 -  [ ] Inventory - add items
    -  [ ] Need to show up somewhere in actions list
    -  [ ] Would be nice if they could store charges and amount
    -  [ ] Special option for weapons, can add more fields
 -  [x] Spells
-   -  [ ] Maybe its own tab for unprepared spells?
+-  [ ] Add "events" - short/long rest that gives HP, hit dice, refills charges/spells, etc.
+-  [ ] At least one place to put notes/descriptions/thoughts
+-  [ ] Money
+-  [x] Skill rows/skills could use some refactoring. There's some gross repeated logic
+
+---
+
+-  [ ] Add ability to say "+cha" or "+prof" to smart input boxes to add that
+-  [ ] Fix Autocomplete UI
+   -  [ ] Darken the colors
+   -  [ ] Fix the round borders not showing up?
+-  [ ] Remove all errors/warnings
+
+--
+V2
+
+-  [ ] Spell tab for unprepared spells?
 -  [ ] Clicking on stuff lets you roll dice
    -  [ ] Abilities
    -  [ ] Skills
    -  [ ] Actions
    -  [ ] Items
    -  [ ] Spells
--  [ ] Add "events" - short/long rest that gives HP, hit dice, refills charges/spells, etc.
--  [ ] At least one place to put notes/descriptions/thoughts
--  [ ] Money
 -  [ ] Potentially rename "trigger" to something else
--  [x] Skill rows/skills could use some refactoring. There's some gross repeated logic
--  [ ] Remove all errors/warnings
-
----
-
--  [ ] Add ability to say "+cha" or "+prof" to smart input boxes to add that
+-  [ ] Attacks/spells need to be connected to ability scores
 
 ## Cursed learnings:
 
