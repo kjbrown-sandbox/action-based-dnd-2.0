@@ -124,6 +124,14 @@ export const PROFICIENCY_LEVELS = [
 ] as const;
 export type ProficiencyLabel = (typeof PROFICIENCY_LEVELS)[number];
 
+export type Money = {
+   cp: number; // Copper pieces
+   sp: number; // Silver pieces
+   gp: number; // Gold pieces
+   ep: number; // Electrum pieces
+   pp: number; // Platinum pieces
+};
+
 export type Character = {
    id: number;
    name: string;
@@ -157,6 +165,7 @@ export type Character = {
    skillProficiencies: {
       [key in SkillKey]: ProficiencyLabel;
    };
+   money: Money; // Added money property to track currency
 };
 
 export const LAST_USED_CHARACTER_ID = "lastUsedCharacterID";
