@@ -37,8 +37,6 @@ export default function ExtraInfoPanels() {
    const [activeTab, setActiveTab] = useState(0);
    const [isSpell, setIsSpell] = useState(false);
 
-   console.log("actions", actions);
-
    if (!character) {
       return null;
    }
@@ -101,7 +99,7 @@ export default function ExtraInfoPanels() {
       <div className="flex flex-1 flex-col m-4 text-contrast-10 bg-contrast-1">
          {/* Tabs */}
          <TabCollection
-            labels={["Add Action", "Attributes & Skills"]}
+            labels={["Add Action", "Attributes", "Inventory"]}
             onChange={(index) => setActiveTab(index)}
          />
 
@@ -395,6 +393,54 @@ export default function ExtraInfoPanels() {
                                     </div>
                                  </div>
                               )}
+                              <div className="my-4">
+                                 <label className="flex items-center gap-2">
+                                    <Switch
+                                       checked={!!values.item}
+                                       onCheckedChange={(checked) =>
+                                          setFieldValue(
+                                             "item",
+                                             checked
+                                                ? {
+                                                     amount: 1,
+                                                     charges: 0,
+                                                  }
+                                                : undefined
+                                          )
+                                       }
+                                    />
+                                    Is item?
+                                 </label>
+                              </div>
+                              {values.item && (
+                                 <div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Amount</label>
+                                       <FormInputSmartNumber
+                                          name="item.amount"
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Charges</label>
+                                       <FormInputSmartNumber
+                                          name="item.charges"
+                                          className="w-full p-2 rounded bg-contrast-3 text-contrast-10"
+                                       />
+                                    </div>
+                                    <div className="mb-4">
+                                       <label className="block mb-1">Charges refill on</label>
+                                       <Autocomplete
+                                          items={timeOptions}
+                                          value={values.item.chargesRefillOn || null}
+                                          onSelect={(value) =>
+                                             setFieldValue("item.chargesRefillOn", value)
+                                          }
+                                          placeholder="Select time action"
+                                       />
+                                    </div>
+                                 </div>
+                              )}
                               <Button type="submit" className="w-full">
                                  Add Action
                               </Button>
@@ -438,6 +484,31 @@ export default function ExtraInfoPanels() {
                         {SKILL_LIST.map((skill) => (
                            <SkillRow key={skill} skillKey={skill} />
                         ))}
+                     </div>
+                  </div>
+               </div>
+            )}
+
+            {activeTab === 2 && (
+               <div>
+                  <div className="flex flex-col gap-6 h-full">
+                     <h2 className="text-lg font-bold">Inventory</h2>
+                     <div className="grid grid-cols-1 gap-4">
+                        {actions
+                           .filter((action) => action.item)
+                           .map((action) => (
+                              <div key={action.id} className="p-4 border rounded bg-contrast-2">
+                                 <h3 className="text-md font-semibold">{action.title}</h3>
+                                 {action?.description && <p>{action?.description}</p>}
+                                 {action.item?.amount && <p>Amount: {action.item.amount}</p>}
+                                 {action.item?.charges ? (
+                                    <p>Charges: {action.item.charges}</p>
+                                 ) : undefined}
+                                 {action.item?.chargesRefillOn && (
+                                    <p>Charges Refill On: {action.item.chargesRefillOn}</p>
+                                 )}
+                              </div>
+                           ))}
                      </div>
                   </div>
                </div>

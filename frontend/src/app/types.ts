@@ -60,6 +60,12 @@ export interface Spell {
    ritual?: boolean;
 }
 
+export interface Item {
+   amount?: number; // Quantity of the item
+   charges?: number; // Number of charges the item has
+   chargesRefillOn?: TimeAction; // When charges refill
+}
+
 export interface Action {
    id: number;
    characterID: number;
@@ -70,6 +76,7 @@ export interface Action {
    triggers: (CommonTrigger | string)[];
    spell?: Spell; // New field for spell-specific attributes
    source?: string; // New field for source information
+   item?: Item; // New field for item-specific attributes
 }
 
 export interface CharacterData {
