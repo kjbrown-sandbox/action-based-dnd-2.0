@@ -65,7 +65,7 @@ export default function Navbar() {
                <>
                   {/* Character Selection */}
                   {/* <div className="w-full mb-4">
-                     <label className="block font-bold mb-2">Select Character:</label>
+                     <label className="block font-bold mb-2">Select Character</label>
                      <Autocomplete
                         items={allCharacters.map((char) => ({
                            value: char.id.toString(),
@@ -78,19 +78,20 @@ export default function Navbar() {
                   </div> */}
 
                   {/* First Section */}
-                  <div className="flex flex-col gap-2">
-                     <div>
-                        <label className="block font-bold">Name:</label>
-                        <Input
-                           type="text"
-                           value={character.name}
-                           onChange={(e) => handleCharacterChange("name", e.target.value)}
-                           onBlur={(e) => handleCharacterChange("name", e.target.value)}
-                        />
-                     </div>
-                     <div className="grid grid-cols-3 gap-4">
+                  <div>
+                     <h2 className="text-lg font-bold mb-3">Main Character</h2>
+                     <div className="grid grid-cols-4 gap-4">
+                        <div className="col-span-3">
+                           <label className="block font-bold">Name</label>
+                           <Input
+                              type="text"
+                              value={character.name}
+                              onChange={(e) => handleCharacterChange("name", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("name", e.target.value)}
+                           />
+                        </div>
                         <div className="col-span-1">
-                           <label className="block font-bold">Level:</label>
+                           <label className="block font-bold">Level</label>
                            <InputSmartNumber
                               value={character.level}
                               onChange={(e) => handleCharacterChange("level", e.target.value)}
@@ -98,7 +99,7 @@ export default function Navbar() {
                            />
                         </div>
                         <div className="col-span-2">
-                           <label className="block font-bold">Class:</label>
+                           <label className="block font-bold">Class</label>
                            <Input
                               type="text"
                               value={character.class}
@@ -107,7 +108,7 @@ export default function Navbar() {
                            />
                         </div>
                         <div>
-                           <label className="block font-bold">Race:</label>
+                           <label className="block font-bold">Race</label>
                            <Input
                               type="text"
                               value={character.race}
@@ -116,7 +117,7 @@ export default function Navbar() {
                            />
                         </div>
                         <div>
-                           <label className="block font-bold">Background:</label>
+                           <label className="block font-bold">Background</label>
                            <Input
                               type="text"
                               value={character.background || ""}
@@ -127,123 +128,237 @@ export default function Navbar() {
                      </div>
                   </div>
 
-                  <Divider orientation="vertical" size="lg" />
                   {/* Middle Section */}
-                  <div className="grid grid-cols-3 gap-4">
-                     <div>
-                        <label className="block font-bold">Armor Class:</label>
-                        <Input
-                           type="number"
-                           value={character.armorClass}
-                           onChange={(e) =>
-                              handleCharacterChange("armorClass", parseInt(e.target.value))
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange("armorClass", parseInt(e.target.value))
-                           }
-                        />
-                     </div>
-                     <div>
-                        <label className="block font-bold">Initiative Bonus:</label>
-                        <Input
-                           type="number"
-                           value={character.initiativeBonus}
-                           onChange={(e) =>
-                              handleCharacterChange("initiativeBonus", parseInt(e.target.value))
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange("initiativeBonus", parseInt(e.target.value))
-                           }
-                        />
-                     </div>
-                     <div>
-                        <label className="block font-bold">Speed:</label>
-                        <Input
-                           type="number"
-                           value={character.speed}
-                           onChange={(e) =>
-                              handleCharacterChange("speed", parseInt(e.target.value))
-                           }
-                           onBlur={(e) => handleCharacterChange("speed", parseInt(e.target.value))}
-                        />
-                     </div>
-                     <div>
-                        <label className="block font-bold">Proficiency:</label>
-                        <InputSmartNumber
-                           value={character.proficiency}
-                           onChange={(e) =>
-                              handleCharacterChange("proficiency", parseInt(e.target.value))
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange("proficiency", parseInt(e.target.value))
-                           }
-                        />
-                     </div>
-                  </div>
-
-                  {/* New Section: Hit Dice */}
-                  <div className="flex flex-col gap-2">
-                     <div>
-                        <label className="block font-bold">Current Hit Dice:</label>
-                        <Input
-                           type="text"
-                           value={character.currentHitDice}
-                           onChange={(e) => handleCharacterChange("currentHitDice", e.target.value)}
-                           onBlur={(e) => handleCharacterChange("currentHitDice", e.target.value)}
-                        />
-                     </div>
-                     <div>
-                        <label className="block font-bold">Max Hit Dice:</label>
-                        <Input
-                           type="text"
-                           value={character.maxHitDice}
-                           onChange={(e) => handleCharacterChange("maxHitDice", e.target.value)}
-                           onBlur={(e) => handleCharacterChange("maxHitDice", e.target.value)}
-                        />
+                  <Divider orientation="vertical" />
+                  <div>
+                     <h2 className="text-lg font-bold mb-3">Common Stats</h2>
+                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                           <label className="block font-bold">Initiative</label>
+                           <Input
+                              type="number"
+                              value={character.initiativeBonus}
+                              onChange={(e) =>
+                                 handleCharacterChange("initiativeBonus", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("initiativeBonus", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
+                        <div className="self-end">
+                           <label className="block font-bold">Armor Class</label>
+                           <Input
+                              type="number"
+                              value={character.armorClass}
+                              onChange={(e) =>
+                                 handleCharacterChange("armorClass", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("armorClass", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Speed</label>
+                           <Input
+                              type="number"
+                              value={character.speed}
+                              onChange={(e) =>
+                                 handleCharacterChange("speed", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("speed", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Proficiency</label>
+                           <InputSmartNumber
+                              value={character.proficiency}
+                              onChange={(e) =>
+                                 handleCharacterChange("proficiency", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("proficiency", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
                      </div>
                   </div>
 
-                  {/* Last Section */}
-                  <div className="grid grid-cols-3 gap-4">
-                     <div>
-                        <label className="block font-bold">Current HP:</label>
-                        <Input
-                           type="number"
-                           value={character.currentHP}
-                           onChange={(e) =>
-                              handleCharacterChange("currentHP", parseInt(e.target.value))
-                           }
-                           onBlur={(e) =>
-                              handleCharacterChange("currentHP", parseInt(e.target.value))
-                           }
-                        />
+                  {/* Health Section */}
+                  <Divider orientation="vertical" />
+                  <div className="w-120">
+                     <h2 className="text-lg font-bold mb-3">Health</h2>
+                     <div className="grid grid-cols-3 gap-4">
+                        <div>
+                           <label className="block font-bold">Current</label>
+                           <Input
+                              type="number"
+                              value={character.currentHP}
+                              onChange={(e) =>
+                                 handleCharacterChange("currentHP", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("currentHP", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Max</label>
+                           <Input
+                              type="number"
+                              value={character.maxHP}
+                              onChange={(e) =>
+                                 handleCharacterChange("maxHP", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("maxHP", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Temp</label>
+                           <Input
+                              type="number"
+                              value={character.tempHP || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("tempHP", parseInt(e.target.value))
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("tempHP", parseInt(e.target.value))
+                              }
+                           />
+                        </div>
                      </div>
-                     <div>
-                        <label className="block font-bold">Max HP:</label>
-                        <Input
-                           type="number"
-                           value={character.maxHP}
-                           onChange={(e) =>
-                              handleCharacterChange("maxHP", parseInt(e.target.value))
-                           }
-                           onBlur={(e) => handleCharacterChange("maxHP", parseInt(e.target.value))}
-                        />
-                     </div>
-                     <div>
-                        <label className="block font-bold">Temp HP:</label>
-                        <Input
-                           type="number"
-                           value={character.tempHP || 0}
-                           onChange={(e) =>
-                              handleCharacterChange("tempHP", parseInt(e.target.value))
-                           }
-                           onBlur={(e) => handleCharacterChange("tempHP", parseInt(e.target.value))}
-                        />
+                     <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                           <label className="block font-bold">Current Hit Dice</label>
+                           <Input
+                              type="text"
+                              value={character.currentHitDice}
+                              onChange={(e) =>
+                                 handleCharacterChange("currentHitDice", e.target.value)
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("currentHitDice", e.target.value)
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">Max Hit Dice</label>
+                           <Input
+                              type="text"
+                              value={character.maxHitDice}
+                              onChange={(e) => handleCharacterChange("maxHitDice", e.target.value)}
+                              onBlur={(e) => handleCharacterChange("maxHitDice", e.target.value)}
+                           />
+                        </div>
                      </div>
                   </div>
-                  <Divider orientation="vertical" size="lg" />
+
+                  {/* Money Section */}
+                  <Divider orientation="vertical" />
+                  <div className="flex flex-col w-180">
+                     <h2 className="text-lg font-bold mb-3">Money</h2>
+                     <div className="grid grid-cols-5 gap-4">
+                        <div>
+                           <label className="block font-bold">CP</label>
+                           <InputSmartNumber
+                              value={character.money?.cp || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    cp: parseInt(e.target.value),
+                                 })
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    cp: parseInt(e.target.value),
+                                 })
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">SP</label>
+                           <InputSmartNumber
+                              value={character.money?.sp || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    sp: parseInt(e.target.value),
+                                 })
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    sp: parseInt(e.target.value),
+                                 })
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">GP</label>
+                           <InputSmartNumber
+                              value={character.money?.gp || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    gp: parseInt(e.target.value),
+                                 })
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    gp: parseInt(e.target.value),
+                                 })
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">EP</label>
+                           <InputSmartNumber
+                              value={character.money?.ep || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    ep: parseInt(e.target.value),
+                                 })
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    ep: parseInt(e.target.value),
+                                 })
+                              }
+                           />
+                        </div>
+                        <div>
+                           <label className="block font-bold">PP</label>
+                           <InputSmartNumber
+                              value={character.money?.pp || 0}
+                              onChange={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    pp: parseInt(e.target.value),
+                                 })
+                              }
+                              onBlur={(e) =>
+                                 handleCharacterChange("money", {
+                                    ...character.money,
+                                    pp: parseInt(e.target.value),
+                                 })
+                              }
+                           />
+                        </div>
+                     </div>
+                  </div>
+
                   {/* Death saves section */}
-                  <div className="flex flex-col gap-4 w-100">
+                  <Divider orientation="vertical" />
+                  <div className="flex flex-col gap-4 w-60">
                      <h2 className="text-lg font-bold">Death Saves</h2>
                      <div className="flex flex-col gap-2">
                         {/* Saves */}
@@ -297,102 +412,6 @@ export default function Navbar() {
                                  </button>
                               ))}
                            </div>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Money Section */}
-                  <div className="flex flex-col gap-4 w-250">
-                     <h2 className="text-lg font-bold">Money</h2>
-                     <div className="grid grid-cols-5 gap-4">
-                        <div>
-                           <label className="block font-bold">CP:</label>
-                           <InputSmartNumber
-                              value={character.money?.cp || 0}
-                              onChange={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    cp: parseInt(e.target.value),
-                                 })
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    cp: parseInt(e.target.value),
-                                 })
-                              }
-                           />
-                        </div>
-                        <div>
-                           <label className="block font-bold">SP:</label>
-                           <InputSmartNumber
-                              value={character.money?.sp || 0}
-                              onChange={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    sp: parseInt(e.target.value),
-                                 })
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    sp: parseInt(e.target.value),
-                                 })
-                              }
-                           />
-                        </div>
-                        <div>
-                           <label className="block font-bold">GP:</label>
-                           <InputSmartNumber
-                              value={character.money?.gp || 0}
-                              onChange={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    gp: parseInt(e.target.value),
-                                 })
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    gp: parseInt(e.target.value),
-                                 })
-                              }
-                           />
-                        </div>
-                        <div>
-                           <label className="block font-bold">EP:</label>
-                           <InputSmartNumber
-                              value={character.money?.ep || 0}
-                              onChange={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    ep: parseInt(e.target.value),
-                                 })
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    ep: parseInt(e.target.value),
-                                 })
-                              }
-                           />
-                        </div>
-                        <div>
-                           <label className="block font-bold">PP:</label>
-                           <InputSmartNumber
-                              value={character.money?.pp || 0}
-                              onChange={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    pp: parseInt(e.target.value),
-                                 })
-                              }
-                              onBlur={(e) =>
-                                 handleCharacterChange("money", {
-                                    ...character.money,
-                                    pp: parseInt(e.target.value),
-                                 })
-                              }
-                           />
                         </div>
                      </div>
                   </div>
